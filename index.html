@@ -365,6 +365,11 @@ body{background:
 [dir="rtl"] .hero-reel{margin-left:0;margin-right:-4px}
 [dir="rtl"] .copyline .v#em{direction:ltr;text-align:right}
 
+/* ---------- Justified paragraphs (EN + AR) ---------- */
+.lede,.copy p,.step p,.case-body p,.sec-head > p{text-align:justify;text-justify:inter-word;text-align-last:start}
+html:not([dir="rtl"]) .lede,html:not([dir="rtl"]) .copy p,html:not([dir="rtl"]) .step p,html:not([dir="rtl"]) .case-body p{hyphens:auto;-webkit-hyphens:auto}
+[dir="rtl"] .lede,[dir="rtl"] .copy p,[dir="rtl"] .step p,[dir="rtl"] .case-body p{text-justify:inter-word}
+
 /* ---------- Rounded boxes ---------- */
 .services{border:0!important;gap:14px}
 .svc{border:1px solid var(--ink-3)!important;border-radius:22px;overflow:hidden}
