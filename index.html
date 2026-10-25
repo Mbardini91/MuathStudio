@@ -349,6 +349,33 @@ body{background:
 .hero-reel img{width:100%;height:100%;object-fit:contain;display:block}
 #beams{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;filter:blur(18px);opacity:.75}
 
+/* ---------- Perspective tunnel ---------- */
+.tunnel{position:relative;height:280vh}
+.tunnel-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;perspective:1200px}
+.tunnel-ring{position:absolute;left:50%;top:50%;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+.tunnel-ring.r1{width:48vmin;height:48vmin;border:1px solid color-mix(in srgb,var(--lime) 22%,transparent)}
+.tunnel-ring.r2{width:76vmin;height:76vmin;border:1px dashed color-mix(in srgb,var(--bone) 12%,transparent)}
+.tunnel-copy{position:relative;z-index:0;text-align:center;max-width:36rem;padding-inline:16px;will-change:transform,opacity}
+.tunnel-copy .label{color:var(--lime);margin-bottom:14px}
+.tunnel-copy h2{font-size:clamp(48px,9vw,120px);line-height:.92;background:linear-gradient(180deg,var(--bone) 30%,color-mix(in srgb,var(--bone) 35%,transparent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tunnel-hint{margin-top:16px;color:var(--ash);font-size:15px}
+.tunnel-space{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
+.tcard{position:absolute;left:50%;top:50%;aspect-ratio:4/5;padding:0;border:0;background:var(--ink-2);border-radius:18px;overflow:hidden;cursor:pointer;opacity:0;will-change:transform,opacity;box-shadow:0 30px 60px -20px #000c,0 0 0 1px color-mix(in srgb,var(--bone) 14%,transparent);transition:box-shadow 300ms ease}
+.tcard img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 700ms var(--ease-out,ease)}
+.tcard span{position:absolute;inset:auto 0 0 0;padding:28px 14px 12px;text-align:start;font:600 12px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:linear-gradient(0deg,#000c,transparent)}
+@media (hover:hover) and (pointer:fine){.tcard:hover{box-shadow:0 30px 60px -20px #000c,0 0 0 2px var(--lime)}.tcard:hover img{transform:scale(1.08)}}
+.tunnel-prompt{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+.tunnel-prompt i{width:1px;height:26px;background:linear-gradient(var(--lime),transparent)}
+[dir="rtl"] .tcard span{font-family:var(--arabic);letter-spacing:0;text-transform:none;font-size:13px}
+@media (prefers-reduced-motion: reduce){
+  .tunnel{height:auto}
+  .tunnel-stage{position:relative;height:auto;display:block;perspective:none;padding-block:80px;padding-inline:max(16px,env(safe-area-inset-left,0px))}
+  .tunnel-ring,.tunnel-prompt{display:none}
+  .tunnel-copy{margin:0 auto 40px}
+  .tunnel-space{position:relative;inset:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;max-width:1100px;margin:0 auto;pointer-events:auto}
+  .tcard{position:relative;left:auto;top:auto;opacity:1!important;transform:none!important;width:auto!important}
+}
+
 /* ---------- Language toggle + RTL ---------- */
 .nav-actions{display:flex;align-items:center;gap:10px}
 .lang-toggle{font:600 14px/1 var(--arabic);min-width:56px;padding:12px 16px;border-radius:999px;border:1px solid var(--ink-3);background:color-mix(in srgb,var(--ink) 60%,transparent);color:var(--bone);cursor:pointer;transition:border-color 200ms ease,transform 140ms var(--ease-out,ease)}
@@ -465,6 +492,21 @@ dialog[open] .gallery figure{animation:frame-in 420ms var(--ease-out) both;anima
     </div>
   </section>
 
+
+  <!-- TUNNEL -->
+  <section class="tunnel" id="tunnel" aria-label="Selected work">
+    <div class="tunnel-stage">
+      <div class="tunnel-ring r1" aria-hidden="true"></div>
+      <div class="tunnel-ring r2" aria-hidden="true"></div>
+      <div class="tunnel-copy">
+        <p class="label">Nine projects · one studio</p>
+        <h2>Into the work.</h2>
+        <p class="tunnel-hint">Scroll to fly through. Tap a project to open it.</p>
+      </div>
+      <div class="tunnel-space" aria-hidden="true"><button class="tcard" type="button" tabindex="-1" data-open="bbf"><img src="assets/bbf/jersey.jpg" alt="" loading="lazy" draggable="false"><span>Bahrain Bowling Federation</span></button><button class="tcard" type="button" tabindex="-1" data-open="chef"><img src="assets/bigchef/burger-box.jpg" alt="" loading="lazy" draggable="false"><span>Big Chef</span></button><button class="tcard" type="button" tabindex="-1" data-open="ganache"><img src="assets/ganache/storefront.jpg" alt="" loading="lazy" draggable="false"><span>Ganache</span></button><button class="tcard" type="button" tabindex="-1" data-open="halin"><img src="assets/halin/sign.jpg" alt="" loading="lazy" draggable="false"><span>Halin Massage &amp; Spa</span></button><button class="tcard" type="button" tabindex="-1" data-open="alif"><img src="assets/alif/bag.jpg" alt="" loading="lazy" draggable="false"><span>ALIF Couture</span></button><button class="tcard" type="button" tabindex="-1" data-open="mc"><img src="assets/maskcrew/g1.jpg" alt="" loading="lazy" draggable="false"><span>Mask Crew</span></button><button class="tcard" type="button" tabindex="-1" data-open="pft"><img src="assets/pft/jersey.jpg" alt="" loading="lazy" draggable="false"><span>YK Personal Trainer</span></button><button class="tcard" type="button" tabindex="-1" data-open="gfa"><img src="assets/gfa/pack-shrimp.jpg" alt="" loading="lazy" draggable="false"><span>Gulf Fish Aquarium</span></button><button class="tcard" type="button" tabindex="-1" data-open="adhan"><img src="assets/adhan/slide1.jpg" alt="" loading="lazy" draggable="false"><span>Adhan Competition</span></button></div>
+      <div class="tunnel-prompt" aria-hidden="true"><span class="label">Scroll</span><i></i></div>
+    </div>
+  </section>
 
   <!-- SERVICES -->
   <section class="block" id="services">
@@ -662,6 +704,7 @@ dialog[open] .gallery figure{animation:frame-in 420ms var(--ease-out) both;anima
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ---------- Arabic / English ---------- */
 const AR={
+"Nine projects · one studio":"تسعة مشاريع · استوديو واحد","Into the work.":"إلى داخل الأعمال.","Scroll to fly through. Tap a project to open it.":"مرّر للتنقل بين المشاريع، واضغط على أي مشروع لفتحه.","Scroll":"مرّر","Selected work":"أعمال مختارة",
 "Services":"الخدمات","Projects":"المشاريع","About":"عن الاستوديو","Start a project":"ابدأ مشروعك",
 "Booking projects · Q1 2027":"نستقبل المشاريع · الربع الأول 2027",
 "Manama, Bahrain · 26.2235° N, 50.5876° E":"المنامة، البحرين · 26.2235° شمالاً، 50.5876° شرقاً",
@@ -743,7 +786,7 @@ adhan:"هوية لمسابقة أجمل أذان، تُقام إحياءً لذ�
 };
 let lang='en';
 const T=x=>lang==='ar'?(AR[x]??x):x;
-const I18N_SEL='h1.sr-only,.nav ul a,.nav .btn,.hero-top .label,.lede,.hero-cta .btn,.sec-head .label,.sec-head h2,.sec-head > p,.svc h3,.svc li,.meta h3,.meta .label,.step .label b,.step h3,.step p,#about h2,#about .label,.copy p,.facts b,.contact .label,.contact h2,.copyline .k,.copyline .v:not(#em),.copyline button,form.brief .send,footer .label,footer nav a';
+const I18N_SEL='h1.sr-only,.nav ul a,.nav .btn,.hero-top .label,.lede,.hero-cta .btn,.sec-head .label,.sec-head h2,.sec-head > p,.svc h3,.svc li,.meta h3,.meta .label,.step .label b,.step h3,.step p,#about h2,#about .label,.copy p,.facts b,.contact .label,.contact h2,.copyline .k,.copyline .v:not(#em),.copyline button,form.brief .send,footer .label,footer nav a,.tunnel-copy .label,.tunnel-copy h2,.tunnel-hint,.tunnel-prompt .label,.tcard span';
 function setLang(l){
   lang=l;const ar=l==='ar';const root=document.documentElement;root.lang=l;root.dir=ar?'rtl':'ltr';
   document.querySelectorAll(I18N_SEL).forEach(el=>{if(el.dataset.en===undefined)el.dataset.en=el.innerHTML.trim();el.innerHTML=ar?(AR[el.dataset.en]??el.dataset.en):el.dataset.en});
@@ -860,6 +903,37 @@ function drawReel(cv,t){
   [1/3,2/3].forEach(f=>{c.beginPath();c.moveTo(w*f,0);c.lineTo(w*f,h);c.stroke();c.beginPath();c.moveTo(0,h*f);c.lineTo(w,h*f);c.stroke()});
 }
 
+
+/* Perspective tunnel: driven by native page scroll, no scroll-jacking */
+(()=>{
+  const sec=document.getElementById('tunnel');if(!sec)return;
+  const copy=sec.querySelector('.tunnel-copy'),prompt=sec.querySelector('.tunnel-prompt');
+  const cards=[...sec.querySelectorAll('.tcard')];const N=cards.length;
+  cards.forEach(c=>c.addEventListener('click',()=>{const g=document.querySelector(`#workGrid .card[data-case="${c.dataset.open}"]`);if(g)g.click()}));
+  if(reduce)return;
+  const data=cards.map((c,i)=>{const a=i*137.5*Math.PI/180;return{c,cos:Math.cos(a),sin:Math.sin(a),rx:.28+(i%3)*.08,ry:.26+(i%2)*.09,rot:(i%2?-1:1)*(3+(i%5)*2),i}});
+  let W=innerWidth,H=innerHeight,mob=W<768,target=0,prog=0,px=0,py=0,tx=0,ty=0,raf=0,active=false;
+  const size=()=>{W=innerWidth;H=innerHeight;mob=W<768;const cw=mob?Math.max(130,Math.min(180,W*.38)):Math.max(180,Math.min(270,W*.18));cards.forEach(c=>c.style.width=cw+'px');sec.querySelector('.tunnel-stage').style.perspective=mob?'900px':'1200px'};
+  const read=()=>{const r=sec.getBoundingClientRect();const span=sec.offsetHeight-H;target=Math.min(1,Math.max(0,-r.top/Math.max(1,span)))};
+  const lerp=(a,b,t)=>a+(b-a)*t, map=(v,a,b,c,d)=>c+(d-c)*Math.min(1,Math.max(0,(v-a)/(b-a)));
+  const op=(t)=>t<.18?map(t,0,.18,0,1):t>.82?map(t,.82,.98,1,0):1;
+  const tick=()=>{
+    prog=lerp(prog,target,.12);px=lerp(px,tx,.08);py=lerp(py,ty,.08);
+    const far=mob?-1200:-1700,near=mob?350:500,pan=mob?20:45,span=.55;
+    data.forEach(d=>{const s=(d.i/N)*(1-span),t=Math.min(1,Math.max(0,(prog-s)/span));const z=far+(near-far)*t;const o=op(t);
+      const x=d.cos*W*d.rx-px*pan,y=d.sin*H*d.ry-py*pan;
+      d.c.style.transform=`translate3d(calc(-50% + ${x.toFixed(1)}px),calc(-50% + ${y.toFixed(1)}px),${z.toFixed(1)}px) rotateZ(${d.rot}deg)`;
+      d.c.style.opacity=o.toFixed(3);d.c.style.pointerEvents=o>.5?'auto':'none';d.c.style.zIndex=d.i+1});
+    const sc=prog<.5?map(prog,0,.5,.7,1):map(prog,.5,1,1,1.35);const to=prog<.12?map(prog,0,.12,.25,1):prog>.85?map(prog,.85,1,1,0):1;
+    copy.style.transform=`scale(${sc.toFixed(3)})`;copy.style.opacity=to.toFixed(3);prompt.style.opacity=map(prog,0,.12,1,0).toFixed(3);
+    if(active||Math.abs(prog-target)>.0005)raf=requestAnimationFrame(tick);else raf=0};
+  const kick=()=>{if(!raf)raf=requestAnimationFrame(tick)};
+  addEventListener('scroll',()=>{read();kick()},{passive:true});
+  addEventListener('resize',()=>{size();read();kick()});
+  addEventListener('pointermove',e=>{if(!active)return;tx=(e.clientX/W-.5)*2;ty=(e.clientY/H-.5)*2;kick()},{passive:true});
+  new IntersectionObserver(es=>{active=es[0].isIntersecting;if(active)kick()}).observe(sec);
+  size();read();prog=target;tick();
+})();
 
 /* Light beams: brand-tinted, drawn at half resolution, paused when hidden */
 (()=>{
