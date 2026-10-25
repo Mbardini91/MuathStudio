@@ -113,14 +113,12 @@ section.block{padding-block:clamp(72px,10vw,140px)}
 .svc ul{list-style:none;margin:auto 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .svc li{font-family:var(--mono);font-size:11px;letter-spacing:.04em;padding:5px 9px;border:1px solid var(--ink-3);border-radius:999px;color:var(--ash)}
 .svc .tc{position:absolute;top:clamp(24px,3vw,36px);right:clamp(24px,3vw,36px)}
-.services{grid-template-columns:repeat(6,minmax(0,1fr))}
-.svc{min-height:230px;padding:22px 18px;gap:14px}
-.svc .glyph{width:40px;height:40px}
-.svc h3{font-size:clamp(18px,1.5vw,22px)}
-.svc p{font-size:13.5px;line-height:1.5}
-.svc .tc{top:22px;right:18px}
-.svc li{font-size:10px;padding:4px 7px}
-@media (max-width:1180px){.services{grid-template-columns:repeat(6,minmax(220px,1fr));overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin}.svc{scroll-snap-align:start}}
+.services{grid-template-columns:repeat(3,minmax(0,1fr))}
+.svc{min-height:220px;padding:clamp(22px,2.6vw,32px);gap:16px}
+.svc .glyph{width:48px;height:48px}
+.svc h3{font-size:clamp(20px,2vw,26px)}
+.svc .tc{top:clamp(22px,2.6vw,32px);right:clamp(22px,2.6vw,32px)}
+@media (max-width:720px){.services{grid-template-columns:repeat(2,minmax(0,1fr))}.svc{min-height:190px;padding:18px}}
 
 /* Work */
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
