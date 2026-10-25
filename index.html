@@ -349,6 +349,18 @@ body{background:
 .hero-reel img{width:100%;height:100%;object-fit:contain;display:block}
 #beams{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;filter:blur(18px);opacity:.75}
 
+/* ---------- Rounded boxes ---------- */
+.services{border:0!important;gap:14px}
+.svc{border:1px solid var(--ink-3)!important;border-radius:22px;overflow:hidden}
+.cover{border-radius:20px!important}
+.card.wide .cover{border-radius:24px!important}
+dialog{border-radius:26px!important}
+.case .cover{border-radius:0!important}
+.gallery figure{border-radius:14px!important}
+.gallery .strip img{border-radius:10px!important}
+.filters button,.svc li{border-radius:999px}
+.portrait img{border-radius:0}
+
 /* ---------- Motion system ---------- */
 :root{--ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1)}
 /* Press feedback: buttons, filters, cards */
