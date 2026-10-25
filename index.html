@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Muath Studio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: editorial single-scroll studio site. Oversized Syne type, a timecode rail for motion/video, lime used only for signal moments. */
+:root{
+  --ink:#060705;          /* page ground, green-biased near-black */
+  --ink-2:#141612;        /* raised surfaces */
+  --ink-3:#1E211B;        /* lines, wells */
+  --bone:#F6F8EF;         /* primary text */
+  --ash:#A3A994;          /* secondary text */
+  --lime:#C8F000;         /* signal accent */
+  --lime-ink:#0B0C0A;     /* text on lime */
+  --display:"IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body:"IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --arabic:"IBM Plex Sans Arabic", "Geeza Pro", "Noto Sans Arabic", sans-serif;
+  --gutter:clamp(16px, 4vw, 56px);
+  --max:1320px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--ink);color:var(--bone);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+a{color:inherit}
+::selection{background:var(--lime);color:var(--lime-ink)}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:2px}
+
+.wrap{max-width:var(--max);margin:0 auto;padding-left:max(var(--gutter), env(safe-area-inset-left,0px));padding-right:max(var(--gutter), env(safe-area-inset-right,0px))}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ash)}
+.label b{color:var(--lime);font-weight:500}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:.95;letter-spacing:-.03em;margin:0;text-wrap:balance}
+p{margin:0}
+
+/* Nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--ink) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--ink-3)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em}
+.mark i{width:22px;height:22px;background:var(--lime);display:block;clip-path:polygon(0 0,100% 0,100% 100%,50% 60%,0 100%)}
+.nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+.nav ul a{text-decoration:none;font-size:14px;color:var(--ash);transition:color .2s}
+.nav ul a:hover{color:var(--bone)}
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 14px/1 var(--body);padding:13px 20px;border-radius:999px;text-decoration:none;border:1px solid var(--ink-3);background:transparent;color:var(--bone);cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .2s}
+.btn:hover{border-color:var(--bone)}
+.btn.primary{background:var(--lime);color:var(--lime-ink);border-color:var(--lime)}
+.btn.primary:hover{transform:translateY(-1px)}
+@media (max-width:820px){.nav ul{display:none}}
+
+/* Hero */
+.hero{padding-block:clamp(48px,9vw,120px) clamp(40px,6vw,72px)}
+.hero-top{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,48px)}
+.status{display:inline-flex;align-items:center;gap:10px}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 0 var(--lime);animation:ping 2.4s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--lime) 60%,transparent)}80%,100%{box-shadow:0 0 0 10px transparent}}
+.hero h1{font-size:clamp(52px,12.5vw,188px)}
+.hero h1 .row{display:flex;align-items:baseline;gap:.18em;flex-wrap:wrap}
+.hero h1 .out{color:transparent;-webkit-text-stroke:1.5px var(--bone)}
+.hero h1 .ar{font-family:var(--arabic);font-weight:700;font-size:.42em;letter-spacing:0;color:var(--lime);line-height:1;transform:translateY(-.25em)}
+.hero h1 span.word{display:inline-block;animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.hero h1 .row:nth-child(2) span.word{animation-delay:.08s}
+.hero h1 .row:nth-child(3) span.word{animation-delay:.16s}
+@keyframes rise{from{transform:translateY(.35em);opacity:.2}to{transform:none;opacity:1}}
+.hero-reel{position:relative;width:clamp(150px,20vw,260px);aspect-ratio:336/472;max-width:100%;overflow:hidden;background:var(--ink);margin-left:-4px}
+.mark img{width:26px;height:26px;display:block}
+
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.hero-main{display:flex;align-items:center;gap:clamp(24px,5vw,72px)}
+.hero-main .hero-reel{flex:none}
+.hero-foot{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:28px clamp(24px,4vw,56px);min-width:0;flex:1}
+.hero-foot p.lede{font-size:clamp(20px,2.4vw,34px)!important;line-height:1.35!important;max-width:none!important}
+.hero-cta{justify-content:flex-end!important;flex-wrap:nowrap!important}
+@media (max-width:980px){.hero-foot{grid-template-columns:1fr}.hero-cta{justify-content:flex-start!important;flex-wrap:wrap!important}}
+@media (max-width:620px){.hero-main{flex-direction:column;align-items:flex-start}}
+.hero-foot p.lede{font-size:clamp(17px,1.6vw,20px);color:var(--bone);max-width:34ch;line-height:1.5}
+.hero-foot p.lede em{font-style:normal;color:var(--lime)}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:760px){.hero-foot{grid-template-columns:1fr}.hero-cta{justify-content:flex-start}}
+
+/* Discipline ticker */
+.ticker{border-block:1px solid var(--ink-3);overflow:hidden;padding-block:10px;white-space:nowrap}
+.ticker-track{display:inline-flex;gap:32px;animation:slide 38s linear infinite;font-family:var(--display);font-weight:600;font-size:clamp(14px,1.6vw,20px);letter-spacing:0}
+.ticker-track span{display:inline-flex;align-items:center;gap:32px}
+.ticker-track span::after{content:"";width:6px;height:6px;background:var(--lime);transform:rotate(45deg)}
+.ticker-track span:nth-child(even){color:transparent;-webkit-text-stroke:1px var(--ash)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* Sections */
+section.block{padding-block:clamp(72px,10vw,140px)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(36px,5vw,64px)}
+.sec-head h2{font-size:clamp(40px,7vw,96px)}
+.sec-head h2.one-line{font-size:clamp(26px,5.6vw,84px);white-space:nowrap}
+.sec-head p{max-width:40ch;color:var(--ash)}
+
+/* Services */
+.services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink-3);border-left:1px solid var(--ink-3)}
+.svc{border-right:1px solid var(--ink-3);border-bottom:1px solid var(--ink-3);padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;gap:18px;min-height:300px;position:relative;transition:background .3s}
+.svc:hover{background:var(--ink-2)}
+.svc .glyph{width:56px;height:56px}
+.svc .glyph *{stroke:var(--bone);fill:none;stroke-width:1.5;transition:stroke .3s}
+.svc:hover .glyph *{stroke:var(--lime)}
+.svc h3{font-size:clamp(24px,2.4vw,30px);letter-spacing:-.02em}
+.svc p{color:var(--ash);font-size:15px;max-width:36ch}
+.svc ul{list-style:none;margin:auto 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.svc li{font-family:var(--mono);font-size:11px;letter-spacing:.04em;padding:5px 9px;border:1px solid var(--ink-3);border-radius:999px;color:var(--ash)}
+.svc .tc{position:absolute;top:clamp(24px,3vw,36px);right:clamp(24px,3vw,36px)}
+.services{grid-template-columns:repeat(6,minmax(0,1fr))}
+.svc{min-height:340px;padding:22px 18px;gap:14px}
+.svc .glyph{width:40px;height:40px}
+.svc h3{font-size:clamp(18px,1.5vw,22px)}
+.svc p{font-size:13.5px;line-height:1.5}
+.svc .tc{top:22px;right:18px}
+.svc li{font-size:10px;padding:4px 7px}
+@media (max-width:1180px){.services{grid-template-columns:repeat(6,minmax(220px,1fr));overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin}.svc{scroll-snap-align:start}}
+
+/* Work */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.filters button{font:500 13px/1 var(--body);padding:10px 16px;border-radius:999px;border:1px solid var(--ink-3);background:transparent;color:var(--ash);cursor:pointer;transition:all .2s}
+.filters button:hover{color:var(--bone);border-color:var(--ash)}
+.filters button[aria-pressed="true"]{background:var(--bone);color:var(--ink);border-color:var(--bone)}
+.filters button .n{font-family:var(--mono);font-size:11px;margin-left:6px;opacity:.6}
+.work{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
+.card{grid-column:span 6;display:flex;flex-direction:column;gap:14px;text-decoration:none;cursor:pointer;background:none;border:0;padding:0;color:inherit;text-align:left;font:inherit}
+.card.wide{grid-column:span 12}
+.card.third{grid-column:span 4}
+.cover{position:relative;aspect-ratio:4/3;max-width:100%;border-radius:6px;overflow:hidden;background:var(--ink-2)}
+.card.wide .cover{aspect-ratio:21/9}
+.cover > .art{position:absolute;inset:0;transition:transform 600ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.card:hover .cover > .art{transform:scale(1.035)}}
+.cover .open{position:absolute;right:14px;bottom:14px;width:44px;height:44px;border-radius:50%;background:var(--lime);color:var(--lime-ink);display:grid;place-items:center;transform:scale(.6);opacity:0;transition:all .3s}
+.card:hover .open,.card:focus-visible .open{transform:none;opacity:1}
+.meta{display:flex;justify-content:space-between;gap:16px;align-items:baseline}
+.meta h3{font-size:clamp(20px,2vw,26px);letter-spacing:-.02em;line-height:1.1}
+.meta .label{white-space:nowrap}
+.card .sub{color:var(--ash);font-size:14px;margin-top:-8px}
+.card[hidden]{display:none}
+@media (max-width:820px){.card,.card.third{grid-column:span 12}.card.wide .cover{aspect-ratio:16/10}}
+
+/* Cover art — each a mini identity study */
+.a-para{background:radial-gradient(120% 90% at 80% 20%,#2A2A1C 0%,#0F100C 60%);display:grid;place-items:center}
+.a-para .seal{width:min(46%,320px);aspect-ratio:1;border-radius:50%;border:2px solid #C9A85C;display:grid;place-items:center;position:relative}
+.a-para .seal::before{content:"";position:absolute;inset:12%;border-radius:50%;border:1px dashed #C9A85C80}
+.a-para .bar{width:62%;height:10%;background:#C9A85C;border-radius:3px;position:relative}
+.a-para .bar::before,.a-para .bar::after{content:"";position:absolute;top:-70%;width:14%;height:240%;background:#E9DCB8;border-radius:3px}
+.a-para .bar::before{left:-6%}.a-para .bar::after{right:-6%}
+.a-para .txt{position:absolute;left:5%;bottom:8%;font:800 clamp(18px,3vw,40px)/.9 var(--display);color:#E9DCB8;letter-spacing:-.02em}
+.a-para .txt small{display:block;font:500 11px/1.4 var(--mono);color:#C9A85C;letter-spacing:.1em;margin-top:8px}
+.a-para .yr{position:absolute;right:5%;top:8%;font:800 clamp(28px,6vw,90px)/1 var(--display);color:transparent;-webkit-text-stroke:1px #C9A85C80}
+
+.a-fred{background:#E8DCC8;display:grid;grid-template-columns:1fr 1fr}
+.a-fred .l{display:grid;place-items:center;border-right:1px solid #3B2A1F22}
+.a-fred .cup{width:46%;aspect-ratio:3/4;background:#3B2A1F;border-radius:6px 6px 22% 22%;display:grid;place-items:center;color:#E8DCC8;font:800 clamp(18px,3vw,34px)/1 var(--display);letter-spacing:-.04em}
+.a-fred .r{display:grid;grid-template-rows:repeat(3,1fr)}
+.a-fred .r div{display:flex;align-items:center;padding:0 10%;font:700 clamp(12px,1.4vw,16px)/1 var(--display);color:#3B2A1F;border-bottom:1px solid #3B2A1F22}
+.a-fred .r div:nth-child(2){background:#B8562E;color:#E8DCC8}
+.a-fred .r div:nth-child(3){background:#3B2A1F;color:#E8DCC8;border:0}
+
+.a-img{background:#FFCC00}
+.a-img img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery{grid-column:1/-1;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:8px}
+.gallery figure{margin:0;border-radius:6px;overflow:hidden;background:var(--ink);display:flex;flex-direction:column}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:1}
+.gallery figcaption{font:400 11px/1.3 var(--mono);color:var(--ash);padding:8px 2px 0;background:var(--ink-2)}
+.gallery .g-wide{grid-column:span 4}.gallery .g-wide img{aspect-ratio:16/10}
+.gallery .g-sq{grid-column:span 2}
+.gallery .g-half{grid-column:span 3}
+.gallery .g-strip{grid-column:1/-1;background:var(--ink-2)}
+.gallery .strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;overflow-x:auto}
+.gallery .strip img{aspect-ratio:1;width:100%;min-width:0;border-radius:4px}
+@media (max-width:700px){.gallery .strip{grid-template-columns:repeat(6,42%);scroll-snap-type:x mandatory}.gallery .strip img{scroll-snap-align:start}}
+.gallery .g-full{grid-column:1/-1}.gallery .g-full img{aspect-ratio:16/9}.gallery .g-c img{object-fit:contain;background:#fff}
+.gallery .g-land{grid-column:span 3}.gallery .g-land img{aspect-ratio:1.294;object-fit:contain;background:#fff}
+.gallery .g-tall{grid-column:span 3}.gallery .g-tall img{aspect-ratio:2/1}
+@media (max-width:700px){.gallery .g-land{grid-column:span 2}.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.gallery .g-wide{grid-column:span 2}.gallery .g-sq,.gallery .g-half{grid-column:span 2}.gallery .g-tall{grid-column:span 1}.gallery .g-tall img{aspect-ratio:1/2}}
+.a-split{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);background:#fff}
+.a-split video,.a-split img{width:100%;height:100%;display:block}
+.a-split video{object-fit:contain;background:#fff}
+.a-split img{object-fit:cover}
+@media (max-width:820px){.a-split{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.a-duo{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#D9DADB}
+.a-duo img{width:100%;height:100%;object-fit:cover;display:block}
+.a-fill{background:#fff}
+.a-fill video{width:100%;height:100%;object-fit:var(--fit,cover);display:block}
+.card .cover.sq{aspect-ratio:1/1}
+.a-center{display:grid;place-items:center;background:#2C3077}
+.a-center img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.a-center video{position:relative;height:84%;aspect-ratio:9/16;max-width:84%;object-fit:cover;background:#fff;border-radius:6px;box-shadow:0 18px 40px #00000059}
+.a-chef{background:#B3261E;display:grid;place-items:center}
+.a-chef .lock{text-align:center;color:#FFF4E6}
+.a-chef .hat{width:clamp(56px,9vw,110px);height:clamp(42px,7vw,82px);margin:0 auto 10px;background:#FFF4E6;border-radius:50% 50% 10% 10%/60% 60% 10% 10%;position:relative}
+.a-chef .hat::after{content:"";position:absolute;left:18%;right:18%;bottom:-14%;height:22%;background:#FFF4E6;border-radius:2px}
+.a-chef b{display:block;font:800 clamp(26px,4.4vw,60px)/.9 var(--display);letter-spacing:-.04em}
+.a-chef small{font:500 10px/1 var(--mono);letter-spacing:.3em}
+
+.a-wt{background:#0E1226;position:relative;overflow:hidden}
+.a-wt .grid{position:absolute;inset:0;background-image:linear-gradient(#3D5BFF22 1px,transparent 1px),linear-gradient(90deg,#3D5BFF22 1px,transparent 1px);background-size:28px 28px}
+.a-wt .logo{position:absolute;left:10%;top:50%;transform:translateY(-50%);font:800 clamp(48px,9vw,120px)/.8 var(--display);letter-spacing:-.06em;color:#fff}
+.a-wt .logo i{font-style:normal;color:#3D5BFF}
+.a-wt .chip{position:absolute;right:10%;top:50%;transform:translateY(-50%);width:28%;aspect-ratio:1;border:2px solid #3D5BFF;border-radius:14%;display:grid;place-items:center}
+.a-wt .chip::before{content:"";width:44%;aspect-ratio:1;background:#3D5BFF;border-radius:10%}
+
+.a-wps{background:#F2F0EA;display:grid;grid-template-columns:1fr 1fr}
+.a-wps .en,.a-wps .arb{padding:9%;display:flex;flex-direction:column;justify-content:space-between}
+.a-wps .en{background:#00594F;color:#F2F0EA}
+.a-wps .arb{direction:rtl;color:#00594F}
+.a-wps b{font:800 clamp(18px,2.6vw,34px)/1 var(--display);letter-spacing:-.03em}
+.a-wps .arb b{font-family:var(--arabic);font-weight:700;letter-spacing:0}
+.a-wps small{font:500 10px/1.4 var(--mono);letter-spacing:.08em;opacity:.8}
+.a-wps .arb small{font-family:var(--arabic);letter-spacing:0;font-size:12px}
+
+.a-motion{background:var(--ink-2);position:relative}
+.a-motion canvas{width:100%;height:100%;display:block}
+.a-motion .tl{position:absolute;left:4%;right:4%;bottom:7%;display:flex;flex-direction:column;gap:6px}
+.a-motion .tl .ruler{display:flex;justify-content:space-between;font:400 10px/1 var(--mono);color:var(--ash)}
+.a-motion .tl .track{height:6px;background:var(--ink-3);border-radius:3px;position:relative;overflow:hidden}
+.a-motion .tl .track i{position:absolute;inset:0 auto 0 0;width:38%;background:var(--lime);animation:play 7s linear infinite}
+@keyframes play{from{width:0}to{width:100%}}
+.a-motion .tc-big{position:absolute;left:4%;top:7%;font:500 clamp(12px,1.4vw,14px)/1 var(--mono);color:var(--bone)}
+.a-motion .tc-big b{color:var(--lime);font-weight:500}
+
+.a-vo{background:#16130E;display:flex;flex-direction:column;justify-content:center;padding:0 7%;gap:16px}
+.a-vo .wave{display:flex;align-items:center;gap:3px;height:46%}
+.a-vo .wave i{flex:1;background:#E9A23B;border-radius:2px;min-width:2px}
+.a-vo .cap{display:flex;justify-content:space-between;font:400 11px/1 var(--mono);color:#E9A23B99}
+
+/* Case drawer */
+dialog{overflow-y:auto;border:0;padding:0;max-width:min(880px,calc(100vw - 32px));width:100%;background:var(--ink-2);color:var(--bone);border-radius:10px;max-height:calc(100dvh - 48px)}
+dialog::backdrop{background:#000000b3;backdrop-filter:blur(6px)}
+.case{display:grid;grid-template-rows:auto 1fr}
+.case .cover{border-radius:0;aspect-ratio:16/8}
+.case-body{padding:clamp(22px,4vw,40px);display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(20px,4vw,40px)}
+.case-body h3{font-size:clamp(28px,4vw,44px);margin:10px 0 16px}
+.case-body p{color:var(--ash);max-width:56ch}
+.case-body dl{margin:0;display:grid;gap:14px;align-content:start}
+.case-body dt{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ash)}
+.case-body dd{margin:2px 0 0;font-size:15px}
+.close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:0;background:var(--ink);color:var(--bone);font-size:20px;cursor:pointer;z-index:2}
+@media (max-width:700px){.case-body{grid-template-columns:1fr}}
+
+/* Showreel band */
+.reel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(24px,5vw,72px);align-items:center}
+.reel-screen{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:6px;overflow:hidden;background:var(--ink-2);border:1px solid var(--ink-3)}
+.reel-screen canvas{width:100%;height:100%;display:block}
+.reel-screen .play{position:absolute;inset:0;margin:auto;width:84px;height:84px;border-radius:50%;background:var(--lime);border:0;display:grid;place-items:center;cursor:pointer;transition:transform .3s}
+.reel-screen .play:hover{transform:scale(1.08)}
+.reel-screen .hud{position:absolute;inset:auto 14px 12px 14px;display:flex;justify-content:space-between;font:400 11px/1 var(--mono);color:var(--bone)}
+.reel-screen .rec{position:absolute;top:14px;left:14px;display:flex;gap:8px;align-items:center;font:500 11px/1 var(--mono);color:var(--bone)}
+.reel-screen .rec::before{content:"";width:8px;height:8px;border-radius:50%;background:#FF4D3D}
+.reel h2{font-size:clamp(40px,6vw,80px);margin-bottom:20px}
+.reel p{color:var(--ash);max-width:40ch;margin-bottom:28px}
+.specs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--ink-3);border:1px solid var(--ink-3);border-radius:6px;overflow:hidden}
+.specs div{background:var(--ink);padding:16px}
+.specs b{display:block;font:700 22px/1 var(--display);margin-top:8px;font-variant-numeric:tabular-nums}
+@media (max-width:860px){.reel{grid-template-columns:1fr}}
+
+/* Voice */
+.voice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
+.take{border:1px solid var(--ink-3);border-radius:6px;padding:clamp(20px,3vw,28px);display:flex;flex-direction:column;gap:18px;background:var(--ink-2)}
+.take-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.take h3{font-size:22px;letter-spacing:-.02em;line-height:1.15}
+.take .lang{font-family:var(--arabic);font-size:15px;color:var(--lime)}
+.take .wv{display:flex;align-items:center;gap:2px;height:56px}
+.take .wv i{flex:1;background:var(--ash);border-radius:2px;min-width:2px;transition:background .15s}
+.take .wv i.on{background:var(--lime)}
+.take-ctrl{display:flex;align-items:center;gap:14px}
+.take-ctrl button{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--ink-3);background:var(--ink);color:var(--bone);cursor:pointer;display:grid;place-items:center}
+.take-ctrl button[aria-pressed="true"]{background:var(--lime);color:var(--lime-ink);border-color:var(--lime)}
+.take-ctrl .label{font-variant-numeric:tabular-nums}
+.take .note{font-size:12px;color:var(--ash)}
+@media (max-width:760px){.voice{grid-template-columns:1fr}}
+
+/* Process */
+.process{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;counter-reset:s}
+.step{padding:28px 24px 28px 0;border-top:1px solid var(--ink-3);display:flex;flex-direction:column;gap:12px;position:relative}
+.step::before{content:"";position:absolute;top:-1px;left:0;width:0;height:2px;background:var(--lime);transition:width .6s}
+.step:hover::before{width:100%}
+.step h3{font-size:22px;letter-spacing:-.02em}
+.step p{color:var(--ash);font-size:15px}
+@media (max-width:860px){.process{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.process{grid-template-columns:1fr}}
+
+/* About */
+.about{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,6vw,96px);align-items:start}
+.portrait{aspect-ratio:4/5;max-width:100%;border-radius:6px;background:linear-gradient(160deg,var(--ink-3),var(--ink-2));position:relative;overflow:hidden;display:grid;place-items:center}
+.portrait{aspect-ratio:auto!important;display:block!important;background:none!important;border-radius:0!important;overflow:visible!important}
+.portrait .ph{position:static!important;background:none!important;padding:12px 0 0!important;display:flex;justify-content:space-between;border-top:1px solid var(--ink-3)}
+.portrait img{position:relative;z-index:1;width:100%;height:auto;display:block}
+.portrait .ph{z-index:2;padding:10px 12px;background:color-mix(in srgb,var(--ink) 70%,transparent);border-radius:4px;inset:auto 12px 12px 12px!important}
+.portrait .mono{position:absolute;top:2%;left:50%;transform:translateX(-50%);z-index:0;color:transparent;-webkit-text-stroke:1.5px #2F3329;}
+.portrait .mono{font:800 clamp(120px,18vw,240px)/1 var(--display);color:transparent;-webkit-text-stroke:1.5px var(--ink-3);letter-spacing:-.06em}
+.portrait .ph{position:absolute;inset:auto 16px 16px 16px;display:flex;justify-content:space-between}
+.about h2{font-size:clamp(34px,5vw,64px);margin-bottom:28px}
+.about h2 em{font-style:normal;color:var(--lime)}
+.about .copy{display:grid;gap:18px;color:var(--ash);font-size:17px;max-width:58ch}
+.about .copy strong{color:var(--bone);font-weight:500}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:40px;padding-top:28px;border-top:1px solid var(--ink-3)}
+.facts b{display:block;font:800 clamp(30px,3.6vw,48px)/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.tools span{font:500 12px/1 var(--mono);padding:8px 12px;border-radius:4px;background:var(--ink-2);color:var(--bone);border:1px solid var(--ink-3)}
+@media (max-width:860px){.about{grid-template-columns:1fr}.portrait{max-width:420px}}
+
+/* Contact */
+.contact{background:var(--lime);color:var(--lime-ink)}
+.contact .wrap{padding-block:clamp(72px,10vw,140px)}
+.contact .label{color:#0B0C0A99}
+.contact h2{font-size:clamp(52px,11vw,170px);margin:20px 0 40px}
+.contact-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:start}
+.copyline{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 0;border-top:1.5px solid var(--lime-ink)}
+.copyline:last-child{border-bottom:1.5px solid var(--lime-ink)}
+.copyline .k{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;width:90px;flex:none}
+.copyline .v{font:700 clamp(18px,2.2vw,26px)/1.2 var(--display);letter-spacing:-.02em;flex:1;min-width:0;overflow-wrap:anywhere;user-select:all}
+.copyline button{font:600 12px/1 var(--body);padding:9px 14px;border-radius:999px;border:1.5px solid var(--lime-ink);background:transparent;color:var(--lime-ink);cursor:pointer}
+.copyline button:hover{background:var(--lime-ink);color:var(--lime)}
+form.brief{display:grid;gap:14px}
+form.brief label{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;display:grid;gap:8px}
+form.brief input,form.brief select,form.brief textarea{font:500 16px/1.4 var(--body);padding:12px 0;background:transparent;border:0;border-bottom:1.5px solid var(--lime-ink);color:var(--lime-ink);border-radius:0;width:100%}
+form.brief input::placeholder,form.brief textarea::placeholder{color:#0B0C0A80}
+form.brief select{appearance:none;cursor:pointer}
+form.brief textarea{resize:vertical;min-height:84px}
+form.brief .send{justify-self:start;margin-top:8px;background:var(--lime-ink);color:var(--lime);border-color:var(--lime-ink)}
+.sent{font:600 14px/1.4 var(--body)}
+@media (max-width:860px){.contact-grid{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--ink-3)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:28px}
+footer nav{display:flex;gap:20px;flex-wrap:wrap}
+footer a{text-decoration:none;color:var(--ash);font-size:14px}
+footer a:hover{color:var(--bone)}
+
+/* ---------- Ambient light glow ---------- */
+body{background:
+  radial-gradient(42vw 36vw at 92% -4%, color-mix(in srgb,var(--lime) 42%,transparent) 0%, color-mix(in srgb,var(--lime) 14%,transparent) 38%, transparent 70%),
+  radial-gradient(55vw 40vw at 62% 106%, color-mix(in srgb,#5FE3D0 26%,transparent) 0%, transparent 66%),
+  linear-gradient(180deg,#070806 0%,#050604 55%,#030403 100%);
+  background-attachment:fixed;background-color:var(--ink)}
+.svc,.contact,.reel{position:relative}
+.svc{background:color-mix(in srgb,var(--ink) 55%,transparent)}
+.svc:hover{background:color-mix(in srgb,var(--ink-2) 80%,transparent)}
+
+/* ---------- Light beams (ported from BeamsBackground) ---------- */
+.hero-reel{background:transparent!important}
+.hero-reel img{width:100%;height:100%;object-fit:contain;display:block}
+#beams{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;filter:blur(18px);opacity:.75}
+
+/* ---------- Motion system ---------- */
+:root{--ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1)}
+/* Press feedback: buttons, filters, cards */
+.btn,.filters button,.take-ctrl button,.copyline button{transition:transform 140ms var(--ease-out),background-color 200ms ease,color 200ms ease,border-color 200ms ease}
+.btn:active,.filters button:active,.take-ctrl button:active,.copyline button:active{transform:scale(0.97)}
+.card{transition:transform 160ms var(--ease-out)}
+.card:active{transform:scale(0.99)}
+/* Hero intro: one orchestrated entrance, starts from a visible state */
+@keyframes hero-in{from{opacity:.35;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero-reel,.hero-foot .lede,.hero-cta .btn{animation:hero-in 700ms var(--ease-out) both}
+.hero-foot .lede{animation-delay:90ms}
+.hero-cta .btn:nth-child(1){animation-delay:160ms}
+.hero-cta .btn:nth-child(2){animation-delay:210ms}
+/* Scroll reveal: scroll-driven, finished once 40% of the element is on screen */
+@supports (animation-timeline: view()){
+  @keyframes reveal{from{opacity:.25;transform:translateY(28px)}to{opacity:1;transform:none}}
+  .work .card,.svc,.step,.take,.sec-head,.about > *,.reel > *{animation:reveal linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}
+/* Filter: cards fade up when they reappear */
+.card{transition:transform 160ms var(--ease-out),opacity 280ms var(--ease-out),display 280ms allow-discrete}
+@starting-style{.card{opacity:0;transform:translateY(10px)}}
+/* Case view: modal scales up from 0.96, backdrop fades; exits faster than it enters */
+dialog{transition:opacity 240ms var(--ease-out),transform 240ms var(--ease-out),overlay 240ms allow-discrete,display 240ms allow-discrete;opacity:0;transform:scale(0.96) translateY(8px)}
+dialog[open]{opacity:1;transform:none}
+@starting-style{dialog[open]{opacity:0;transform:scale(0.96) translateY(8px)}}
+dialog:not([open]){transition-duration:160ms}
+dialog::backdrop{transition:background-color 240ms ease,backdrop-filter 240ms ease,overlay 240ms allow-discrete,display 240ms allow-discrete}
+@starting-style{dialog[open]::backdrop{background-color:transparent;backdrop-filter:blur(0)}}
+/* Gallery frames stagger in after the modal lands */
+@keyframes frame-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+dialog[open] .gallery figure{animation:frame-in 420ms var(--ease-out) both;animation-delay:calc(160ms + var(--i,0) * 50ms)}
+/* Service glyph nudges on hover */
+.svc .glyph{transition:transform 240ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.svc:hover .glyph{transform:translateY(-3px)}.cover .open{transition:transform 240ms var(--ease-out),opacity 200ms ease}}
+/* Nav links: underline draws in from the left */
+.nav ul a{background:linear-gradient(var(--lime),var(--lime)) left bottom/0 1px no-repeat;padding-bottom:3px;transition:color 200ms ease,background-size 240ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.nav ul a:hover{background-size:100% 1px}}
+/* Reduced motion: keep fades that aid comprehension, drop movement */
+@media (prefers-reduced-motion: reduce){
+  .hero-reel,.hero-foot .lede,.hero-cta .btn,.work .card,.svc,.step,.take,.sec-head,.about > *,.reel > *{animation:none!important;transform:none!important}
+  dialog,dialog[open]{transform:none!important}
+  dialog[open] .gallery figure{animation:none!important}
+  .btn:active,.card:active,.filters button:active{transform:none}
+}
+</style>
+</head>
+<body>
+<canvas id="beams" aria-hidden="true"></canvas>
+<header class="nav">
+  <div class="wrap">
+    <a class="mark" href="#top"><img src="assets/studio/mark.png" alt="" width="26" height="26">Muath Studio</a>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#work">Projects</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <a class="btn primary" href="#contact">Start a project</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <span class="label status">Booking projects · Q1 2027</span>
+        <span class="label">Manama, Bahrain · 26.2235° N, 50.5876° E</span>
+      </div>
+      <h1 class="sr-only">Muath Studio: identity, motion and voice</h1>
+      <div class="hero-main">
+      <div class="hero-reel">
+        <picture><source srcset="assets/studio/hero-alpha-still.png" media="(prefers-reduced-motion: reduce)"><img src="assets/studio/hero-alpha.webp" alt="Muath Studio logo animation" width="336" height="472"></picture>
+      </div>
+      <div class="hero-foot">
+        <p class="lede">I'm Muath Albardini. I design brands and then make them <em>move and speak</em>, from the logo to the launch film to the voice behind it.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#work">See selected work ↓</a>
+          <a class="btn primary" href="#contact">Brief me →</a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SERVICES -->
+  <section class="block" id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="label" style="margin-bottom:16px">Services</p><h2 class="one-line">Six crafts, one studio.</h2></div>
+      </div>
+      <div class="services">
+        <article class="svc">
+          <svg class="glyph" viewBox="0 0 56 56" aria-hidden="true"><rect x="6" y="6" width="44" height="44"/><circle cx="28" cy="28" r="12"/><path d="M6 28h44M28 6v44"/></svg>
+          <span class="label tc">BR</span>
+          <h3>Branding</h3>
+          <p>Full identity systems: strategy, naming direction, colour, type, and guidelines your team can actually use.</p>
+          <ul><li>Brand strategy</li><li>Visual system</li><li>Guidelines</li><li>Sub-brands</li></ul>
+        </article>
+        <article class="svc">
+          <svg class="glyph" viewBox="0 0 56 56" aria-hidden="true"><path d="M8 48L28 8l20 40z"/><path d="M16 32h24"/><circle cx="28" cy="8" r="2.5"/><circle cx="8" cy="48" r="2.5"/><circle cx="48" cy="48" r="2.5"/></svg>
+          <span class="label tc">LG</span>
+          <h3>Logo Design</h3>
+          <p>Marks built on a grid and tested at 16px and on a stadium screen. Arabic and Latin lockups drawn as a pair.</p>
+          <ul><li>Wordmarks</li><li>Symbols</li><li>Bilingual lockups</li></ul>
+        </article>
+        <article class="svc">
+          <svg class="glyph" viewBox="0 0 56 56" aria-hidden="true"><path d="M6 44C16 44 18 12 28 12s12 32 22 32"/><circle cx="28" cy="12" r="3"/><path d="M6 50h44" stroke-dasharray="2 4"/></svg>
+          <span class="label tc">MG</span>
+          <h3>Motion Graphics</h3>
+          <p>Logo animations, brand motion languages, social loops, and explainers with easing that feels like the brand.</p>
+          <ul><li>Logo stings</li><li>Explainers</li><li>Social loops</li></ul>
+        </article>
+        <article class="svc">
+          <svg class="glyph" viewBox="0 0 56 56" aria-hidden="true"><rect x="6" y="14" width="44" height="28" rx="2"/><path d="M6 20h44M6 36h44M14 14v6M24 14v6M34 14v6M44 14v6M14 36v6M24 36v6M34 36v6M44 36v6"/></svg>
+          <span class="label tc">VE</span>
+          <h3>Video Editing</h3>
+          <p>Campaign films, event recaps, and reels for every platform. Cut, colour, sound, and subtitles delivered in one pass.</p>
+          <ul><li>Edit &amp; pacing</li><li>Colour grade</li><li>9:16 · 1:1 · 16:9</li></ul>
+        </article>
+        <article class="svc">
+          <svg class="glyph" viewBox="0 0 56 56" aria-hidden="true"><rect x="20" y="6" width="16" height="28" rx="8"/><path d="M12 28c0 9 7 16 16 16s16-7 16-16M28 44v6M20 50h16"/></svg>
+          <span class="label tc">VO</span>
+          <h3>Voice Over</h3>
+          <p>Arabic and English narration for ads, explainers, and brand films, recorded and cleaned in-house.</p>
+          <ul><li>Arabic · English</li><li>Ads &amp; promos</li><li>Narration</li></ul>
+        </article>
+        <article class="svc">
+          <svg class="glyph" viewBox="0 0 56 56" aria-hidden="true"><rect x="6" y="6" width="20" height="26"/><rect x="30" y="6" width="20" height="14"/><rect x="30" y="24" width="20" height="26"/><rect x="6" y="36" width="20" height="14"/></svg>
+          <span class="label tc">OD</span>
+          <h3>Other Design</h3>
+          <p>Campaign key visuals, social content, greeting designs for national and religious occasions, print and packaging.</p>
+          <ul><li>Campaigns</li><li>Social</li><li>Occasion greetings</li><li>Print</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="block" id="work" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="label" style="margin-bottom:16px">Selected work · 2024–2026</p><h2>Projects.</h2></div>
+        <p>Click any project to open the case notes.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter projects">
+        <button type="button" data-f="all" aria-pressed="true">All<span class="n"></span></button>
+        <button type="button" data-f="branding" aria-pressed="false">Branding<span class="n"></span></button>
+        <button type="button" data-f="logo" aria-pressed="false">Logo<span class="n"></span></button>
+        <button type="button" data-f="motion" aria-pressed="false">Motion &amp; Video<span class="n"></span></button>
+        <button type="button" data-f="campaign" aria-pressed="false">Campaign<span class="n"></span></button>
+      </div>
+
+      <div class="work" id="workGrid">
+        <button class="card wide" data-tags="branding logo motion" data-case="bbf">
+          <div class="cover"><div class="art a-split"><video src="assets/bbf/logo-motion.mp4" poster="assets/bbf/logo-motion-poster.jpg" autoplay muted loop playsinline aria-label="Bahrain Bowling Federation logo animation"></video><img src="assets/bbf/jersey.jpg" alt="BBF logo printed on white sports mesh" loading="lazy"></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>Bahrain Bowling Federation</h3><span class="label">Federation identity · Motion</span></div>
+          <p class="sub">A single-line bowler, the ball, and the flag's serrated edge turned into a motion streak.</p>
+        </button>
+
+        <button class="card" data-tags="branding logo" data-case="chef">
+          <div class="cover"><div class="art a-img" style="background:#FFCC00"><img src="assets/bigchef/logo.jpg" alt="Big Chef chef-hat logo on yellow" loading="lazy"></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>Big Chef</h3><span class="label">Restaurant identity</span></div>
+          <p class="sub">Burgers and more: a chef-hat mark, Khaleeji packaging copy, and colour-coded sub-brands.</p>
+        </button>
+
+        <button class="card" data-tags="branding logo" data-case="ganache">
+          <div class="cover"><div class="art a-img" style="background:#2A2C2E"><img src="assets/ganache/foil.jpg" alt="Ganache wordmark in gold foil on black textured stock" loading="lazy"></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>Ganache</h3><span class="label">Luxury packaging</span></div>
+          <p class="sub">A crown cut like a cacao bean, pressed into every square of the bar.</p>
+        </button>
+
+        <button class="card wide" data-tags="branding logo motion" data-case="para">
+          <div class="cover"><div class="art a-para"><div class="seal"><div class="bar"></div></div><div class="txt">World Para<br>Powerlifting<small>BAHRAIN · DILMUN ROOTS</small></div><div class="yr">2026</div></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>Bahrain Para Powerlifting World Championships</h3><span class="label">Sports identity</span></div>
+          <p class="sub">An event identity built from Dilmun seals and the geometry of the bar.</p>
+        </button>
+
+        <button class="card" data-tags="branding logo" data-case="halin">
+          <div class="cover"><div class="art a-img" style="background:#EDEDEB"><img src="assets/halin/embroidery.jpg" alt="Halin logo embroidered on white fabric" loading="lazy"></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>Halin Massage &amp; Spa</h3><span class="label">Identity · Guidelines</span></div>
+          <p class="sub">One looping line, closed into a circle, filled in five quiet tones of sage and sand.</p>
+        </button>
+
+        <button class="card" data-tags="branding logo" data-case="alif">
+          <div class="cover"><div class="art a-img" style="background:#DCDBD6"><img src="assets/alif/wall.jpg" alt="ALIF Couture calligraphic mark embossed on a stone wall" loading="lazy"></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>ALIF Couture</h3><span class="label">Calligraphic identity</span></div>
+          <p class="sub">The word ألف written as one garment: the alif runs through it like a needle.</p>
+        </button>
+
+        <button class="card wide" data-tags="branding logo motion" data-case="mc">
+          <div class="cover"><div class="art a-fill"><video src="assets/maskcrew/motion-wide.mp4" poster="assets/maskcrew/motion-wide-poster.jpg" autoplay muted loop playsinline aria-label="Mask Crew logo animation"></video></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>Mask Crew</h3><span class="label">Identity · Guidelines · Motion</span></div>
+          <p class="sub">A bilingual mark, a full brand book, and a logo animation for social.</p>
+        </button>
+
+        <button class="card" data-tags="branding logo" data-case="pft">
+          <div class="cover sq"><div class="art a-img" style="background:linear-gradient(90deg,#1C0F1D,#39243B)"><img src="assets/pft/jersey.jpg" alt="Personal fitness trainer monogram printed on a plum training jersey" loading="lazy"></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>YK Personal Trainer</h3><span class="label">Monogram · Identity</span></div>
+          <p class="sub">Two initials cut into a weight plate, ringed like the edge of a gym badge.</p>
+        </button>
+
+        <button class="card" data-tags="branding logo" data-case="gfa">
+          <div class="cover sq"><div class="art a-img" style="background:linear-gradient(90deg,#272A2D,#5D6063)"><img src="assets/gfa/glass-sign.jpg" alt="Gulf Fish Aquarium mark as dimensional signage on a glass office wall" loading="lazy" style="object-position:57% 50%"></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>Gulf Fish Aquarium</h3><span class="label">Identity · Packaging</span></div>
+          <p class="sub">One line draws a shrimp curled over a fish. Each pack takes its own half of the mark.</p>
+        </button>
+
+        <button class="card wide" data-tags="branding logo motion" data-case="adhan">
+          <div class="cover"><div class="art a-fill" style="background:#1F1657"><video src="assets/adhan/motion-card.mp4" poster="assets/adhan/motion-card-poster.jpg" data-case-src="assets/adhan/motion-wide.mp4" data-case-poster="assets/adhan/motion-wide-poster.jpg" autoplay muted loop playsinline aria-label="Adhan competition logo animation" style="object-fit:cover"></video></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>Adhan Competition</h3><span class="label">Identity · Motion</span></div>
+          <p class="sub">A mihrab rising out of a sound wave, with a crescent above, for a competition for the most beautiful call to prayer.</p>
+        </button>
+
+        <button class="card" data-tags="branding logo" data-case="wt">
+          <div class="cover"><div class="art a-wt"><div class="grid"></div><div class="logo">W<i>T</i></div><div class="chip"></div></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>WT Store</h3><span class="label">Tech identity</span></div>
+        </button>
+
+        <button class="card" data-tags="campaign" data-case="wps">
+          <div class="cover"><div class="art a-wps"><div class="en"><small>LMRA · AWARENESS</small><b>Wage Protection System</b></div><div class="arb"><small>هيئة تنظيم سوق العمل</small><b lang="ar">نظام حماية الأجور</b></div></div><span class="open" aria-hidden="true">↗</span></div>
+          <div class="meta"><h3>LMRA · WPS</h3><span class="label">Bilingual campaign</span></div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- PROCESS -->
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="label" style="margin-bottom:16px">How a project runs</p><h2>Process.</h2></div></div>
+      <div class="process">
+        <div class="step"><span class="label"><b>Week 1</b></span><h3>Brief &amp; research</h3><p>A call, a questionnaire, and a look at your market and competitors.</p></div>
+        <div class="step"><span class="label"><b>Week 2–3</b></span><h3>Direction</h3><p>Two or three routes presented as real applications, not loose moodboards.</p></div>
+        <div class="step"><span class="label"><b>Week 3–5</b></span><h3>Build</h3><p>The chosen route refined into the full system, motion, and voice assets.</p></div>
+        <div class="step"><span class="label"><b>Week 6</b></span><h3>Handover</h3><p>Guidelines, source files, and every export your team needs, organised by use.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="block" id="about" style="padding-top:0">
+    <div class="wrap about">
+      <div class="portrait">
+        <img src="assets/studio/portrait-cut.webp" alt="Muath Albardini in a white thobe and red shemagh" width="896" height="1195">
+        <div class="ph"><span class="label">Muath Albardini</span><span class="label">Founder</span></div>
+      </div>
+      <div>
+        <p class="label" style="margin-bottom:16px">About</p>
+        <h2>A designer who also <em>edits, animates,</em> and speaks.</h2>
+        <div class="copy">
+          <p>I'm <strong>Muath Albardini</strong>, a graphic designer and media producer based in Bahrain, and the founder of Muath Studio.</p>
+          <p>My work spans national-scale events, government campaigns, and local brands. Every project is designed bilingual from the first sketch, because in the Gulf the Arabic side is never an afterthought.</p>
+          <p>Clients come to me for the identity and stay for the motion, the edit, and the voice, since all of it is built from the same system.</p>
+        </div>
+        <div class="facts">
+          <div><b>6</b><span class="label">Disciplines</span></div>
+          <div><b>AR/EN</b><span class="label">Bilingual by default</span></div>
+          <div><b>BH</b><span class="label">Gulf-wide clients</span></div>
+        </div>
+        <div class="tools"><span>Illustrator</span><span>Photoshop</span><span>After Effects</span><span>Premiere Pro</span><span>InDesign</span><span>Audition</span><span>Figma</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <p class="label">Contact · Reply within 24 hours</p>
+      <h2>Let's make it move.</h2>
+      <div class="contact-grid">
+        <div>
+          <div class="copyline"><span class="k">Email</span><span class="v" id="em">muath.albardini@gmail.com</span><button type="button" data-copy="em">Copy</button></div>
+          <div class="copyline"><span class="k">Studio</span><span class="v">Muath Studio · Bahrain</span></div>
+        </div>
+        <form class="brief" id="brief" novalidate>
+          <label for="f-name">Name<input id="f-name" name="name" placeholder="Your name" required></label>
+          <label for="f-type">Project<select id="f-type" name="type"><option>Brand identity</option><option>Logo design</option><option>Motion graphics</option><option>Video editing</option><option>Voice over</option><option>Campaign / other</option></select></label>
+          <label for="f-msg">Brief<textarea id="f-msg" name="msg" placeholder="What are you launching, and when?"></textarea></label>
+          <button class="btn send" type="submit">Send brief →</button>
+          <p class="sent" id="sent" hidden></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="label">© 2026 Muath Studio · Bahrain</span>
+    <nav><a href="#services">Services</a><a href="#work">Work</a><a href="#top">Back to top ↑</a></nav>
+  </div>
+</footer>
+
+<dialog id="caseDlg" aria-labelledby="caseTitle">
+  <button class="close" type="button" id="caseClose" aria-label="Close">×</button>
+  <div class="case">
+    <div class="cover" id="caseCover"></div>
+    <div class="case-body">
+      <div><span class="label" id="caseKicker"></span><h3 id="caseTitle"></h3><p id="caseText"></p></div>
+      <dl id="caseFacts"></dl>
+      <div class="gallery" id="caseGallery" hidden></div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(()=>{
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(reduce) document.querySelectorAll('video[autoplay]').forEach(v=>{v.removeAttribute('autoplay');v.pause();v.controls=true});
+
+/* Filters */
+const btns=[...document.querySelectorAll('.filters button')];
+const cards=[...document.querySelectorAll('#workGrid .card')];
+btns.forEach(b=>{const f=b.dataset.f;const n=f==='all'?cards.length:cards.filter(c=>c.dataset.tags.split(' ').includes(f)).length;b.querySelector('.n').textContent=String(n).padStart(2,'0')});
+btns.forEach(b=>b.addEventListener('click',()=>{
+  btns.forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const f=b.dataset.f;
+  cards.forEach(c=>{c.hidden = f!=='all' && !c.dataset.tags.split(' ').includes(f)});
+}));
+
+/* Case notes */
+const cases={
+  para:{k:'Sports identity · 2026',t:'Bahrain Para Powerlifting World Championships',p:'The identity takes its shapes from Dilmun seal stones: a circular emblem holding the bar, so the event reads as Bahraini before it reads as sport. The system runs from medals and accreditation to venue wayfinding, broadcast graphics, and social templates.',f:[['Scope','Identity, motion, event graphics'],['Concept','Dilmun civilisation × the barbell'],['Deliverables','Emblem, guidelines, broadcast package']]},
+  fred:{k:'Brand architecture',t:'Fred Coffee',p:'A master brand with a clear family logic, so new sub-brands for roastery and to-go can launch without a redesign. Warm neutrals and a single roasted orange keep every touchpoint recognisably Fred.',f:[['Scope','Identity, sub-brand system'],['Touchpoints','Cups, packaging, store, social'],['System','Master brand + 2 sub-brands']]},
+  chef:{k:'Restaurant identity',t:'Big Chef',p:'A burger brand built around one solid chef-hat silhouette with hand-cut lettering, so the mark reads instantly on a lightbox sign or a sandwich box. Yellow and black carry the core brand; colour-coded patterns split the menu into Chicken and Beef. Packaging talks in Bahraini dialect, from the pull-tab on the sandwich box to the BBQ Box that walks you through lighting the grill.',f:[['Scope','Logo, identity, packaging, signage'],['System','Yellow core · Chicken and Beef sub-patterns'],['Touchpoints','Storefront, burger and sandwich boxes, BBQ Box, uniform, wraps'],['Voice','Khaleeji Arabic copy']],
+  dir:'bigchef',g:[['burger-box','Burger box','g-half'],['sandwich-box','Sandwich box','g-half'],['bbq-box','BBQ Box kit','g-half'],['apron','Staff apron','g-half'],['pattern-chicken','Chicken pattern','g-tall'],['pattern-beef','Beef pattern','g-tall']]},
+  bbf:{k:'Federation identity · Motion',t:'Bahrain Bowling Federation',dir:'bbf',p:'The mark draws a bowler mid-delivery in one continuous navy line, with the ball released at his feet. Behind him, the red serrated edge of the Bahrain flag stretches into speed lines, so the national colours read as the path of the throw. Those arcs became the system\'s supergraphic, sweeping across polos, beach flags, and stationery, and the logo animation draws the figure stroke by stroke before the flag streak snaps in.',f:[['Client','Bahrain Bowling Federation'],['Scope','Logo, identity, motion, apparel'],['Lockup','Arabic · English, stacked'],['Touchpoints','Team kit, merchandise, flags, stationery, social']],
+  g:[['logo','Primary lockup','g-sq'],['jersey','Jersey print','g-wide'],['polo','Team polo','g-half'],['flag','Beach flag','g-half'],['sweatshirt','Mono print on navy','g-wide'],['pin','Gold pin','g-sq'],['letterhead','Letterhead','g-half'],['social','Social post','g-half']]},
+ganache:{k:'Luxury chocolate · Packaging',t:'Ganache',dir:'ganache',p:'A chocolate label for Aljazeera Roastery. The emblem is a faceted crown that doubles as a split cacao bean, and it sits on the A of a light geometric wordmark. The same crown is pressed into every square of the bar, so the brand is still there after the wrapper comes off. A fine gold lattice wraps the lower third of each pack and carries across to the staff tee. The silver-grey and kraft-cocoa colourways separate the range, with a seal sticker marking cocoa content.',f:[['Client','Aljazeera Roastery'],['Scope','Logo, identity, packaging'],['Range','Silver classic · Kraft 75% dark'],['Touchpoints','Wrappers, bar mould, storefront, foil print, merch']],
+  g:[['storefront','Illuminated storefront','g-wide'],['bar-open','Classic bar and wrapper','g-sq'],['logo','Wordmark and lattice','g-half'],['mug','Mug','g-half'],['bar-flat','75% dark bar','g-wide'],['tee','Staff tee','g-sq','center bottom']]},
+gfa:{k:'Aquaculture identity · Packaging',t:'Gulf Fish Aquarium',dir:'gfa',p:'The mark draws a shrimp curling over a Gulf fish in a single monoline stroke, so the farm\'s two products sit inside one symbol. The stacked Arabic and English lockup keeps the same stroke weight. On packaging the mark splits apart: each product gets its own colour and a giant crop of its half of the symbol, orange for shrimp and teal for Safi, with a repeat pattern of the creature and a Made in Bahrain seal.',f:[['Scope','Logo, identity, packaging, signage'],['Range','Shrimp · Safi fish, 300 g packs'],['Lockup','Arabic · English, monoline'],['Touchpoints','Packs, reception wall, glass signage']],
+  g:[['reception','Reception wall','g-full'],['pack-shrimp','Shrimp pack','g-half'],['pack-safi','Safi fish pack','g-half']]},
+mc:{k:'Identity · Brand guidelines · Motion',t:'Mask Crew',dir:'maskcrew',p:'A bilingual identity delivered with a 19-page brand book. The icon is built from the Arabic letterforms of the name, with a teal stroke curling into the mark and two warm arcs rising from it. Those arcs carry the system: one large arc anchors social templates and presentation covers, and a tight repeat pattern covers letterheads, quotations, and the website. Alexandria was chosen as the typeface because its stroke matches the logo\'s lines, and the palette is navy with teal and orange accents. The logo animation is cut vertically for Reels and Stories.',f:[['Scope','Logo, guidelines, stationery, motion'],['Palette','Navy #2C3077 · Teal #46AEC7 · Orange #FC992B'],['Typeface','Alexandria'],['Motion','10 s · 9:16 for Reels and Stories']],
+  g:[['logo-en','English lockup','g-land'],['logo-ar','Arabic lockup','g-land'],['g1','Brand book cover','g-land'],['g5','One-colour logo versions','g-land'],['g9','One-element style · social','g-land'],['g10','Repeat pattern · print and web','g-land'],['g12','Brand colours','g-land'],['g14','Letterhead and back','g-land'],['g17','Official stamp','g-full g-c']]},
+halin:{k:'Spa identity · Brand guidelines',t:'Halin Massage & Spa',dir:'halin',p:'An identity for a massage and spa in Hidd, Bahrain. The mark starts as one looping line that draws a falling drop and a leaf. That line is closed inside a circle, and its stroke is then thickened and thinned until the gaps read as soft petals. Filled in five muted tones of sage, stone, sand and linen, it feels calm without falling back on the usual lotus. The system runs to a hanging sign, embroidered uniforms, candle tins, stationery and social templates, all collected in a 19-page brand book.',f:[['Client','Halin Massage & Spa, Hidd'],['Scope','Logo, guidelines, stationery, uniform'],['Palette','Sage #7E8076 · Sand #C8BBA7 · Linen #EEEFE7'],['Typeface','Effra']],
+  g:[['logo','Primary logo','g-half'],['construction','Mark construction, steps 1–3','g-half'],['sign','Hanging sign','g-full'],['candle','Candle tin','g-full'],['palette','Five-tone palette','g-land'],['g1','Brand book cover','g-land'],['g5','One-colour versions','g-land'],['g13','Letterhead','g-land'],['g14','Business card','g-land'],['g17','Uniform','g-land']]},
+alif:{k:'Couture identity · Stationery',t:'ALIF Couture',dir:'alif',p:'A calligraphic mark for an abaya and couture house in Isa Town. The name ألف is written as one gathered form: the alif stretches into a long tapered stroke that pierces the curve of the letters like a needle through fabric, and the closed bowl reads as a draped silhouette. A hairline Latin wordmark sits underneath. Sage and warm ivory carry across the shopping bag, the embossed wall sign, and the business cards, where an oversized crop of the letters becomes the back pattern. The bilingual order book is built for the tailoring counter, with an abaya measurement diagram keyed A to H.',f:[['Client','ALIF Couture, Isa Town'],['Scope','Logo, stationery, retail'],['Mark','Arabic calligraphy · ألف'],['Touchpoints','Shopping bag, hang tag, wall sign, business cards, order book']],
+  g:[['wall','Embossed wall sign','g-sq'],['logo','Primary mark','g-sq'],['bag','Shopping bag','g-sq'],['invoice','Order book with measurement chart','g-sq'],['tag','Hang tag','g-sq'],['cards','Business cards','g-sq']]},
+pft:{k:'Fitness identity',t:'YK Personal Trainer',dir:'pft',p:'A monogram for YK, an independent personal trainer. The initials Y and K are cut from one heavy ring, so the mark reads as a weight plate seen face-on, with crossed dumbbells set into the counter. A thin outer ring carries the title in a condensed sports face, closed at each end by a small plate. Deep plum and white keep it out of the usual black-and-red gym look, and the single-colour build holds up in embroidery, screen print and dimensional signage.',f:[['Scope','Monogram, identity, merchandise'],['Colour','Deep plum · white'],['Touchpoints','Gym bag, training jersey, exterior sign']],
+  g:[['logo','Primary monogram','g-half'],['bag','Drawstring gym bag','g-half'],['storefront','Exterior sign','g-full']]},
+adhan:{k:'Competition identity · Motion',t:'Adhan Competition',dir:'adhan',p:'An identity for a competition for the most beautiful adhan, held in memory of the late muezzin Abdulla Mohammed Al-Baloushi. The mark joins three ideas: a crescent, a mihrab arch, and the bars of a sound wave rising and falling on either side, so the call to prayer is drawn as a voice. In the logo animation the bars pulse like a live waveform before they settle and the mihrab draws up out of them. Deep night blue and warm gold carry it from posters to a record sleeve.',f:[['Scope','Logo, identity, motion, print'],['Concept','Crescent · mihrab · sound wave'],['Palette','Night blue · gold'],['Touchpoints','Instagram carousel, social']],
+  g:[['logo','Primary lockup','g-half'],['concept','Concept: crescent, mihrab, sound wave','g-half'],[['slide1','slide2','slide3','slide4','slide5','slide6'],'Instagram announcement carousel · 6 slides']]},
+  wt:{k:'Tech identity',t:'WT Store',p:'A tech retail identity built on a pixel grid. The monogram and chip symbol scale from price tags to storefront and keep the store feeling precise and current.',f:[['Scope','Identity, logo, retail graphics'],['Sector','Consumer electronics']]},
+  wps:{k:'Government campaign',t:'LMRA · Wage Protection System',p:'A bilingual awareness campaign that explains the Wage Protection System to employers and workers. Arabic and English carry equal weight on every piece, with plain-language messaging tested for clarity.',f:[['Client','Labour Market Regulatory Authority'],['Languages','Arabic · English'],['Formats','Social, print, digital screens']]},
+  motion:{k:'Motion',t:'Logo stings',p:'Short logo animations that turn a static mark into a moment: 3 to 6 seconds, built for intros, outros, and social. Each sting comes in 16:9, 1:1, and 9:16 with a sound-designed version.',f:[['Length','3–6 seconds'],['Formats','16:9 · 1:1 · 9:16'],['Tools','After Effects, Audition']]},
+  vo:{k:'Voice over',t:'Voice & narration',p:'Arabic and English reads for commercials, explainers, and documentaries. Delivered as clean WAV files, loudness-matched to broadcast spec, with optional music bed and mix.',f:[['Languages','Arabic · English'],['Delivery','48 kHz / 24-bit WAV'],['Loudness','-16 LUFS web · -23 LUFS broadcast']]}
+};
+const dlg=document.getElementById('caseDlg');
+cards.forEach(c=>c.addEventListener('click',()=>{
+  const d=cases[c.dataset.case];
+  document.getElementById('caseKicker').textContent=d.k;
+  document.getElementById('caseTitle').textContent=d.t;
+  document.getElementById('caseText').textContent=d.p;
+  document.getElementById('caseFacts').innerHTML=d.f.map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join('');
+  const gal=document.getElementById('caseGallery');gal.hidden=!d.g;
+  gal.innerHTML=d.g?d.g.map(([f,cap,cls,pos])=>Array.isArray(f)?`<figure class="g-strip"><div class="strip">${f.map((x,i)=>`<img src="assets/${d.dir}/${x}.jpg" alt="${d.t}: ${cap}, slide ${i+1}" loading="lazy">`).join('')}</div><figcaption>${cap}</figcaption></figure>`:`<figure class="${cls}"><img${pos?` style="object-position:${pos}"`:''} src="assets/${d.dir}/${f}.jpg" alt="${d.t}: ${cap}" loading="lazy"><figcaption>${cap}</figcaption></figure>`).join(''):'';
+  const art=c.querySelector('.art').cloneNode(true);
+  art.querySelectorAll('canvas').forEach(cv=>cv.remove());
+  art.querySelectorAll('video[data-case-src]').forEach(v=>{v.poster=v.dataset.casePoster;v.src=v.dataset.caseSrc;});
+  if(art.querySelector('[data-grid-only]')){art.querySelectorAll('[data-grid-only]').forEach(x=>x.remove());art.style.gridTemplateColumns='1fr';art.querySelectorAll('video').forEach(v=>{v.style.objectFit='cover';if(v.dataset.casePoster)v.poster=v.dataset.casePoster;if(v.dataset.caseSrc)v.src=v.dataset.caseSrc;});}
+  const cov=document.getElementById('caseCover');cov.innerHTML='';cov.appendChild(art);art.querySelectorAll('video').forEach(v=>{v.muted=true;v.controls=true;v.play&&v.play().catch(()=>{})});
+  gal.querySelectorAll('figure').forEach((f,i)=>f.style.setProperty('--i',i));
+  if(dlg.showModal) dlg.showModal();
+}));
+document.getElementById('caseClose').addEventListener('click',()=>dlg.close());
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+
+/* Waveforms */
+function bars(el,n,seed,cls){
+  let s=seed;const r=()=>(s=(s*9301+49297)%233280)/233280;
+  el.innerHTML=Array.from({length:n},(_,i)=>{const env=Math.sin(Math.PI*i/n)*.7+.3;const h=Math.max(6,(r()*.7+.3)*env*100);return `<i style="height:${h.toFixed(0)}%"></i>`}).join('');
+}
+const vw=document.getElementById('voWave');if(vw)bars(vw,120,7);
+document.querySelectorAll('.wv').forEach(w=>bars(w,64,+w.dataset.wave*13));
+
+/* Voice demo playheads (visual only, sample slots) */
+const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+document.querySelectorAll('.take').forEach(t=>{
+  const b=t.querySelector('button'),lab=t.querySelector('[data-time]'),is=[...t.querySelectorAll('.wv i')];
+  const total=lab.textContent.split('/')[1].trim().split(':').reduce((a,v)=>a*60+ +v,0);
+  let tm=null,el=0;
+  const stop=()=>{clearInterval(tm);tm=null;b.setAttribute('aria-pressed','false');b.textContent='▶'};
+  b.addEventListener('click',()=>{
+    if(tm){stop();return}
+    document.querySelectorAll('.take-ctrl button[aria-pressed="true"]').forEach(x=>x.click());
+    b.setAttribute('aria-pressed','true');b.textContent='❚❚';
+    tm=setInterval(()=>{el+=.1;if(el>=total){el=0;stop()}
+      const p=el/total;is.forEach((x,i)=>x.classList.toggle('on',i/is.length<p));
+      lab.textContent=`${fmt(el)} / ${fmt(total)}`},100);
+  });
+});
+
+/* Generative canvases */
+function fit(cv){const r=cv.getBoundingClientRect();const d=Math.min(devicePixelRatio||1,2);cv.width=Math.max(1,r.width*d);cv.height=Math.max(1,r.height*d);return d}
+const lime='#C8F000',bone='#EDEFE6',ash='#3A3F33';
+function drawMotion(cv,t){
+  const d=fit(cv),c=cv.getContext('2d'),w=cv.width,h=cv.height;c.clearRect(0,0,w,h);
+  const cx=w/2,cy=h*.44,R=Math.min(w,h)*.22;
+  for(let i=0;i<4;i++){c.beginPath();c.strokeStyle=i===0?lime:ash;c.lineWidth=(i===0?2.5:1.2)*d;
+    const a=t*.6+i*.8;c.arc(cx,cy,R*(1+i*.28),a,a+Math.PI*(1.2-i*.15));c.stroke()}
+  c.fillStyle=bone;c.font=`700 ${R*.9}px "IBM Plex Sans Arabic", sans-serif`;c.textAlign='center';c.textBaseline='middle';c.fillText('M',cx,cy);
+}
+function drawReel(cv,t){
+  const d=fit(cv),c=cv.getContext('2d'),w=cv.width,h=cv.height;
+  c.fillStyle='#0F110D';c.fillRect(0,0,w,h);
+  const cols=14,cw=w/cols;
+  for(let i=0;i<cols;i++){const v=(Math.sin(t*.9+i*.55)+1)/2;c.fillStyle=i%5===0?lime:'#1E211B';c.fillRect(i*cw+cw*.2,h*(1-v*.75)-h*.08,cw*.6,h*v*.75)}
+  c.strokeStyle='#ffffff14';c.lineWidth=1*d;
+  [1/3,2/3].forEach(f=>{c.beginPath();c.moveTo(w*f,0);c.lineTo(w*f,h);c.stroke();c.beginPath();c.moveTo(0,h*f);c.lineTo(w,h*f);c.stroke()});
+}
+
+
+/* Light beams: brand-tinted, drawn at half resolution, paused when hidden */
+(()=>{
+  const cv=document.getElementById('beams');if(!cv)return;const c=cv.getContext('2d');
+  const S=.5;let W=0,H=0,beams=[],raf=0;
+  const HUES=[[72,92,62],[168,72,62]]; // lime, aqua
+  const make=(i,n,fresh)=>{const lime=i%3!==2,[h,sat,l]=HUES[lime?0:1];
+    return{x:fresh?Math.random()*W*1.4-W*.2:(i%3)*(W/3)+W/6+(Math.random()-.5)*W/6,
+      y:fresh?Math.random()*H*1.5-H*.25:H+60,w:(fresh?30+Math.random()*60:60+Math.random()*70),
+      len:H*2.5,ang:-35+Math.random()*10,sp:(.25+Math.random()*.35),op:(lime?.16:.12)+Math.random()*.1,
+      h:h+(Math.random()-.5)*12,sat,l,p:Math.random()*Math.PI*2,ps:.012+Math.random()*.02}};
+  const size=()=>{W=Math.ceil(innerWidth*S);H=Math.ceil(innerHeight*S);cv.width=W;cv.height=H;
+    beams=Array.from({length:22},(_,i)=>make(i,22,true))};
+  const draw=b=>{c.save();c.translate(b.x,b.y);c.rotate(b.ang*Math.PI/180);
+    const o=b.op*(.8+Math.sin(b.p)*.2),g=c.createLinearGradient(0,0,0,b.len),k=`hsla(${b.h|0},${b.sat}%,${b.l}%,`;
+    g.addColorStop(0,k+'0)');g.addColorStop(.1,k+o*.5+')');g.addColorStop(.4,k+o+')');g.addColorStop(.6,k+o+')');g.addColorStop(.9,k+o*.5+')');g.addColorStop(1,k+'0)');
+    c.fillStyle=g;c.fillRect(-b.w/2,0,b.w,b.len);c.restore()};
+  const frame=move=>{c.clearRect(0,0,W,H);c.filter='blur(14px)';
+    beams.forEach((b,i)=>{if(move){b.y-=b.sp;b.p+=b.ps;if(b.y+b.len<-60)Object.assign(b,make(i,beams.length,false))}draw(b)});c.filter='none'};
+  const loop=()=>{frame(true);raf=requestAnimationFrame(loop)};
+  size();addEventListener('resize',()=>{size();if(reduce)frame(false)});
+  if(reduce){frame(false);return}
+  document.addEventListener('visibilitychange',()=>{cancelAnimationFrame(raf);if(!document.hidden)loop()});
+  loop();
+})();
+
+/* Copy + form */
+document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>{
+  const el=document.getElementById(b.dataset.copy);
+  const done=()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1600)};
+  try{navigator.clipboard.writeText(el.textContent).then(done,()=>{getSelection().selectAllChildren(el);b.textContent='Selected'})}catch(e){getSelection().selectAllChildren(el);b.textContent='Selected'}
+}));
+document.getElementById('brief').addEventListener('submit',e=>{
+  e.preventDefault();
+  const n=document.getElementById('f-name').value.trim(),s=document.getElementById('sent');
+  s.hidden=false;
+  s.textContent=n?`Thanks, ${n}. This preview form doesn't send yet. Email the address on the left to start.`:'Add your name so I know who to reply to.';
+});
+})();
+</script>
+</body>
+</html>
