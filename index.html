@@ -349,6 +349,22 @@ body{background:
 .hero-reel img{width:100%;height:100%;object-fit:contain;display:block}
 #beams{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;filter:blur(18px);opacity:.75}
 
+/* ---------- Language toggle + RTL ---------- */
+.nav-actions{display:flex;align-items:center;gap:10px}
+.lang-toggle{font:600 14px/1 var(--arabic);min-width:56px;padding:12px 16px;border-radius:999px;border:1px solid var(--ink-3);background:color-mix(in srgb,var(--ink) 60%,transparent);color:var(--bone);cursor:pointer;transition:border-color 200ms ease,transform 140ms var(--ease-out,ease)}
+.lang-toggle:hover{border-color:var(--lime)}
+.lang-toggle:active{transform:scale(0.97)}
+.lang-toggle[lang="en"]{font-family:var(--body);letter-spacing:.04em}
+[dir="rtl"] .label,[dir="rtl"] .svc li,[dir="rtl"] .tools span,[dir="rtl"] .case-body dt,[dir="rtl"] .copyline .k,[dir="rtl"] form.brief label,[dir="rtl"] .gallery figcaption{font-family:var(--arabic);letter-spacing:0;text-transform:none}
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3{letter-spacing:0;line-height:1.25}
+[dir="rtl"] .lede{line-height:1.6!important}
+[dir="rtl"] .svc .tc{right:auto;left:clamp(22px,2.6vw,32px)}
+[dir="rtl"] .cover .open{right:auto;left:14px}
+[dir="rtl"] .close{right:auto;left:12px}
+[dir="rtl"] .nav ul a{background-position:right bottom}
+[dir="rtl"] .hero-reel{margin-left:0;margin-right:-4px}
+[dir="rtl"] .copyline .v#em{direction:ltr;text-align:right}
+
 /* ---------- Rounded boxes ---------- */
 .services{border:0!important;gap:14px}
 .svc{border:1px solid var(--ink-3)!important;border-radius:22px;overflow:hidden}
@@ -417,7 +433,7 @@ dialog[open] .gallery figure{animation:frame-in 420ms var(--ease-out) both;anima
       <li><a href="#work">Projects</a></li>
       <li><a href="#about">About</a></li>
     </ul>
-    <a class="btn primary" href="#contact">Start a project</a>
+    <div class="nav-actions"><button class="lang-toggle" id="langBtn" type="button" lang="ar" aria-label="التبديل إلى العربية">عربي</button><a class="btn primary" href="#contact">Start a project</a></div>
   </div>
 </header>
 
@@ -639,6 +655,102 @@ dialog[open] .gallery figure{animation:frame-in 420ms var(--ease-out) both;anima
 <script>
 (()=>{
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ---------- Arabic / English ---------- */
+const AR={
+"Services":"الخدمات","Projects":"المشاريع","About":"عن الاستوديو","Start a project":"ابدأ مشروعك",
+"Booking projects · Q1 2027":"نستقبل المشاريع · الربع الأول 2027",
+"Manama, Bahrain · 26.2235° N, 50.5876° E":"المنامة، البحرين · 26.2235° شمالاً، 50.5876° شرقاً",
+"Muath Studio: identity, motion and voice":"معاذ ستوديو: هوية، حركة، وصوت",
+"I'm Muath Albardini. I design brands and then make them <em>move and speak</em>, from the logo to the launch film to the voice behind it.":"أنا معاذ البارديني. أصمّم العلامات التجارية ثم أجعلها <em>تتحرّك وتتكلّم</em>، من الشعار إلى فيلم الإطلاق إلى الصوت الذي يرويه.",
+"See selected work ↓":"شاهد الأعمال ↓","Brief me →":"أرسل فكرتك ←",
+"Six crafts, one studio.":"ست حِرَف، استوديو واحد.",
+"Branding":"الهوية التجارية","Logo Design":"تصميم الشعارات","Motion Graphics":"الموشن جرافيك","Video Editing":"مونتاج الفيديو","Voice Over":"التعليق الصوتي","Other Design":"تصاميم أخرى",
+"Brand strategy":"استراتيجية العلامة","Visual system":"النظام البصري","Guidelines":"دليل الهوية","Sub-brands":"العلامات الفرعية",
+"Wordmarks":"الشعارات النصية","Symbols":"الرموز","Bilingual lockups":"شعارات ثنائية اللغة",
+"Logo stings":"تحريك الشعارات","Explainers":"فيديوهات تعريفية","Social loops":"حلقات للسوشال ميديا",
+"Edit &amp; pacing":"المونتاج والإيقاع","Colour grade":"تصحيح الألوان",
+"Arabic · English":"عربي · إنجليزي","Ads &amp; promos":"إعلانات وبرومو","Narration":"السرد الصوتي",
+"Campaigns":"الحملات","Social":"السوشال ميديا","Occasion greetings":"تهاني المناسبات","Print":"المطبوعات",
+"Selected work · 2024–2026":"أعمال مختارة · 2024–2026","Projects.":"المشاريع.",
+"Click any project to open the case notes.":"اضغط على أي مشروع لعرض تفاصيله.",
+"All":"الكل","Logo":"الشعارات","Motion &amp; Video":"حركة وفيديو","Motion & Video":"حركة وفيديو",
+"Bahrain Bowling Federation":"الاتحاد البحريني للبولينج","Federation identity · Motion":"هوية اتحاد رياضي · موشن",
+"Big Chef":"بيغ شيف","Restaurant identity":"هوية مطعم",
+"Ganache":"غاناش","Luxury packaging":"تغليف فاخر",
+"Halin Massage &amp; Spa":"حالين للمساج والسبا","Halin Massage & Spa":"حالين للمساج والسبا","Identity · Guidelines":"هوية · دليل استخدام",
+"ALIF Couture":"ألِف كوتور","Calligraphic identity":"هوية خطّية",
+"Mask Crew":"ماسك كرو","Identity · Guidelines · Motion":"هوية · دليل استخدام · موشن",
+"YK Personal Trainer":"YK مدرّب شخصي","Monogram · Identity":"مونوغرام · هوية",
+"Gulf Fish Aquarium":"الخليج للاستزراع السمكي","Identity · Packaging":"هوية · تغليف",
+"Adhan Competition":"مسابقة أجمل أذان","Identity · Motion":"هوية · موشن",
+"How a project runs":"كيف يسير المشروع","Process.":"مراحل العمل.",
+"Week 1":"الأسبوع 1","Week 2–3":"الأسبوع 2–3","Week 3–5":"الأسبوع 3–5","Week 6":"الأسبوع 6",
+"Brief &amp; research":"الموجز والبحث","Direction":"الاتجاه الإبداعي","Build":"التنفيذ","Handover":"التسليم",
+"A call, a questionnaire, and a look at your market and competitors.":"مكالمة واستبيان قصير ودراسة لسوقك ومنافسيك.",
+"Two or three routes presented as real applications, not loose moodboards.":"اتجاهان أو ثلاثة تُعرض كتطبيقات حقيقية، لا مجرد لوحات إلهام.",
+"The chosen route refined into the full system, motion, and voice assets.":"تطوير الاتجاه المختار إلى نظام هوية كامل مع الحركة والصوت.",
+"Guidelines, source files, and every export your team needs, organised by use.":"دليل الهوية والملفات المصدرية وكل ما يحتاجه فريقك، مرتّباً حسب الاستخدام.",
+"Muath Albardini":"معاذ البارديني","Founder":"المؤسس",
+"A designer who also <em>edits, animates,</em> and speaks.":"مصمّم <em>يُمنتج ويحرّك</em> ويتكلّم أيضاً.",
+"I'm <strong>Muath Albardini</strong>, a graphic designer and media producer based in Bahrain, and the founder of Muath Studio.":"أنا <strong>معاذ البارديني</strong>، مصمّم جرافيك ومنتج إعلامي من البحرين، ومؤسس معاذ ستوديو.",
+"My work spans national-scale events, government campaigns, and local brands. Every project is designed bilingual from the first sketch, because in the Gulf the Arabic side is never an afterthought.":"تمتد أعمالي من فعاليات وطنية كبرى إلى حملات حكومية وعلامات تجارية محلية. كل مشروع يُصمَّم بلغتين منذ أول رسمة، لأن الجانب العربي في الخليج ليس إضافة لاحقة أبداً.",
+"Clients come to me for the identity and stay for the motion, the edit, and the voice, since all of it is built from the same system.":"يأتيني العملاء من أجل الهوية ويبقون من أجل الحركة والمونتاج والصوت، لأن كل ذلك مبنيّ من النظام نفسه.",
+"Disciplines":"تخصصات","AR/EN":"عربي/EN","Bilingual by default":"ثنائي اللغة دائماً","BH":"البحرين","Gulf-wide clients":"عملاء في أنحاء الخليج",
+"Contact · Reply within 24 hours":"تواصل · الرد خلال 24 ساعة","Let's make it move.":"لنجعلها تتحرّك.",
+"Email":"البريد","Studio":"الاستوديو","Copy":"نسخ","Copied":"تم النسخ","Selected":"تم التحديد",
+"Muath Studio · Bahrain":"معاذ ستوديو · البحرين",
+"Name":"الاسم","Project":"المشروع","Brief":"الموجز","Send brief →":"أرسل الموجز ←",
+"Your name":"اسمك","What are you launching, and when?":"ماذا تطلق، ومتى؟",
+"Brand identity":"هوية تجارية","Logo design":"تصميم شعار","Motion graphics":"موشن جرافيك","Video editing":"مونتاج فيديو","Voice over":"تعليق صوتي","Campaign / other":"حملة / أخرى",
+"© 2026 Muath Studio · Bahrain":"© 2026 معاذ ستوديو · البحرين","Work":"الأعمال","Back to top ↑":"للأعلى ↑",
+/* case view */
+"Client":"العميل","Scope":"النطاق","Lockup":"صيغة الشعار","Touchpoints":"نقاط الظهور","System":"النظام","Voice":"النبرة","Range":"المجموعة","Palette":"الألوان","Typeface":"الخط","Mark":"الرمز","Motion":"الحركة","Colour":"اللون","Concept":"الفكرة",
+"Federation identity · Motion":"هوية اتحاد رياضي · موشن",
+"Logo, identity, motion, apparel":"شعار، هوية، موشن، ملابس رياضية","Arabic · English, stacked":"عربي · إنجليزي، متراكب","Team kit, merchandise, flags, stationery, social":"زي الفريق، منتجات، أعلام، قرطاسية، سوشال ميديا",
+"Primary lockup":"الشعار الأساسي","Jersey print":"طباعة على القميص","Team polo":"قميص بولو الفريق","Beach flag":"علم إعلاني","Mono print on navy":"طباعة أحادية على الكحلي","Gold pin":"دبوس ذهبي","Letterhead":"ورق رسمي","Social post":"منشور سوشال",
+"Logo, identity, packaging, signage":"شعار، هوية، تغليف، لوحات","Yellow core · Chicken and Beef sub-patterns":"أصفر أساسي · نقوش فرعية للدجاج واللحم","Storefront, burger and sandwich boxes, BBQ Box, uniform, wraps":"الواجهة، علب البرغر والساندويتش، بوكس الشواء، الزي، أوراق التغليف","Khaleeji Arabic copy":"نصوص باللهجة الخليجية",
+"Burger box":"علبة البرغر","Sandwich box":"علبة الساندويتش","BBQ Box kit":"بوكس الشواء","Staff apron":"مريلة الطاقم","Chicken pattern":"نقش الدجاج","Beef pattern":"نقش اللحم",
+"Luxury chocolate · Packaging":"شوكولاتة فاخرة · تغليف","Aljazeera Roastery":"محمصة الجزيرة","Logo, identity, packaging":"شعار، هوية، تغليف","Silver classic · Kraft 75% dark":"كلاسيك فضي · داكن 75% كرافت","Wrappers, bar mould, storefront, foil print, merch":"أغلفة، قالب اللوح، الواجهة، طباعة ذهبية، منتجات",
+"Illuminated storefront":"واجهة مضاءة","Classic bar and wrapper":"اللوح الكلاسيكي وغلافه","Wordmark and lattice":"الشعار والنقش","Mug":"كوب","75% dark bar":"لوح داكن 75%","Staff tee":"تيشيرت الطاقم",
+"Spa identity · Brand guidelines":"هوية سبا · دليل الهوية","Halin Massage & Spa, Hidd":"حالين للمساج والسبا، الحد","Logo, guidelines, stationery, uniform":"شعار، دليل هوية، قرطاسية، زي","Sage #7E8076 · Sand #C8BBA7 · Linen #EEEFE7":"مريمي #7E8076 · رملي #C8BBA7 · كتّاني #EEEFE7","Effra":"Effra",
+"Primary logo":"الشعار الأساسي","Mark construction, steps 1–3":"بناء الرمز، المراحل 1–3","Hanging sign":"لوحة معلّقة","Candle tin":"علبة شمعة","Five-tone palette":"لوحة من خمس درجات","Brand book cover":"غلاف دليل الهوية","One-colour versions":"نسخ بلون واحد","Business card":"بطاقة العمل","Uniform":"الزي",
+"Couture identity · Stationery":"هوية أزياء · قرطاسية","ALIF Couture, Isa Town":"ألِف كوتور، مدينة عيسى","Logo, stationery, retail":"شعار، قرطاسية، متجر","Arabic calligraphy · ألف":"خط عربي · ألف","Shopping bag, hang tag, wall sign, business cards, order book":"كيس التسوق، بطاقة القطعة، لوحة الجدار، بطاقات العمل، دفتر الطلبات",
+"Embossed wall sign":"لوحة جدارية بارزة","Primary mark":"الرمز الأساسي","Shopping bag":"كيس التسوق","Order book with measurement chart":"دفتر الطلبات مع جدول المقاسات","Hang tag":"بطاقة القطعة","Business cards":"بطاقات العمل",
+"Identity · Brand guidelines · Motion":"هوية · دليل الهوية · موشن","Logo, guidelines, stationery, motion":"شعار، دليل هوية، قرطاسية، موشن","Navy #2C3077 · Teal #46AEC7 · Orange #FC992B":"كحلي #2C3077 · فيروزي #46AEC7 · برتقالي #FC992B","Alexandria":"Alexandria","10 s · 9:16 for Reels and Stories":"10 ث · 9:16 للريلز والستوري",
+"English lockup":"الشعار الإنجليزي","Arabic lockup":"الشعار العربي","One-colour logo versions":"نسخ الشعار بلون واحد","One-element style · social":"أسلوب العنصر الواحد · سوشال","Repeat pattern · print and web":"النقش المتكرر · طباعة وويب","Brand colours":"ألوان الهوية","Letterhead and back":"الورق الرسمي ووجهه الخلفي","Official stamp":"الختم الرسمي",
+"Fitness identity":"هوية لياقة بدنية","Monogram, identity, merchandise":"مونوغرام، هوية، منتجات","Deep plum · white":"برقوقي داكن · أبيض","Gym bag, training jersey, exterior sign":"حقيبة الجيم، قميص التدريب، لوحة خارجية",
+"Primary monogram":"المونوغرام الأساسي","Drawstring gym bag":"حقيبة جيم برباط","Exterior sign":"لوحة خارجية",
+"Aquaculture identity · Packaging":"هوية استزراع سمكي · تغليف","Shrimp · Safi fish, 300 g packs":"روبيان · سمك صافي، عبوات 300 غ","Arabic · English, monoline":"عربي · إنجليزي، خط أحادي","Packs, reception wall, glass signage":"العبوات، جدار الاستقبال، لوحة زجاجية",
+"Reception wall":"جدار الاستقبال","Shrimp pack":"عبوة الروبيان","Safi fish pack":"عبوة سمك الصافي",
+"Competition identity · Motion":"هوية مسابقة · موشن","Logo, identity, motion, print":"شعار، هوية، موشن، مطبوعات","Crescent · mihrab · sound wave":"هلال · محراب · موجة صوتية","Night blue · gold":"أزرق ليلي · ذهبي","Instagram carousel, social":"كاروسيل إنستغرام، سوشال ميديا",
+"Concept: crescent, mihrab, sound wave":"الفكرة: هلال، محراب، موجة صوتية","Instagram announcement carousel · 6 slides":"كاروسيل إعلان المسابقة على إنستغرام · 6 شرائح","slide":"شريحة"
+};
+const CASE_AR={
+bbf:"يرسم الشعار لاعب بولينج لحظة الرمي بخط كحلي واحد متصل، والكرة تنطلق عند قدميه. خلفه يمتد الحد المسنّن الأحمر لعلم البحرين إلى خطوط سرعة، فتصبح الألوان الوطنية مسار الرمية نفسها. تحوّلت تلك الأقواس إلى العنصر الجرافيكي الرئيسي للهوية، تمتد على قمصان البولو والأعلام الإعلانية والقرطاسية، وفي تحريك الشعار يُرسم اللاعب خطاً بخط قبل أن يندفع خط العلم.",
+chef:"علامة برغر مبنية على قبعة طاهٍ مصمتة واحدة بحروف مقصوصة يدوياً، ليُقرأ الشعار فوراً على اللوحة المضيئة أو علبة الساندويتش. الأصفر والأسود يحملان الهوية الأساسية، ونقوش ملوّنة تقسم القائمة إلى دجاج ولحم. والتغليف يتكلم باللهجة البحرينية، من شريط السحب على علبة الساندويتش إلى بوكس الشواء الذي يشرح لك كيف تشعل الفحم.",
+ganache:"علامة شوكولاتة لمحمصة الجزيرة. الرمز تاج مضلّع يشبه أيضاً حبة كاكاو مشقوقة، ويستقر فوق حرف A في شعار هندسي خفيف. والتاج نفسه محفور في كل مربع من اللوح، فتبقى العلامة حاضرة بعد نزع الغلاف. نقش ذهبي دقيق يلفّ الثلث السفلي من كل عبوة ويمتد إلى تيشيرت الطاقم، ولونا الرمادي الفضي والكاكاو الكرافتي يميّزان المجموعة، مع ملصق دائري يحدد نسبة الكاكاو.",
+halin:"هوية لمركز مساج وسبا في الحد بالبحرين. يبدأ الرمز بخط واحد ملتفّ يرسم قطرة تسقط وورقة. ثم يُغلق الخط داخل دائرة، ويتغيّر سُمكه حتى تبدو الفراغات كبتلات ناعمة. وبخمس درجات هادئة من المريمي والحجري والرملي والكتّاني، يمنح إحساساً بالسكينة دون اللجوء إلى زهرة اللوتس المعتادة. ويمتد النظام إلى لوحة معلّقة وزي مطرّز وعلب شموع وقرطاسية وقوالب سوشال ميديا، جُمعت كلها في دليل هوية من 19 صفحة.",
+alif:"رمز خطّي لدار عبايات وأزياء في مدينة عيسى. كُتب اسم «ألف» كشكل واحد متجمّع: تمتد الألف بضربة طويلة مستدقّة تخترق انحناء الحروف كإبرة تعبر القماش، والتجويف المغلق يبدو كقطعة منسدلة. وتحته شعار لاتيني رفيع. يمتد المريمي والعاجي الدافئ إلى كيس التسوق واللوحة الجدارية البارزة وبطاقات العمل، حيث يصبح اقتطاع مكبّر للحروف نقشاً للوجه الخلفي. ودفتر الطلبات ثنائي اللغة مصمّم لطاولة التفصيل، مع رسم لمقاسات العباية مرقّم من A إلى H.",
+mc:"هوية ثنائية اللغة سُلّمت مع دليل هوية من 19 صفحة. الأيقونة مبنية من حروف الاسم العربي، بخط فيروزي يلتف داخل الرمز وقوسين دافئين يرتفعان منه. وهذان القوسان يحملان النظام كله: قوس كبير واحد يرتكز عليه في قوالب السوشال وأغلفة العروض، ونقش متكرر كثيف للورق الرسمي وعروض الأسعار والموقع. اختير خط Alexandria لأن ضرباته تطابق خطوط الشعار، والألوان كحلي مع لمسات فيروزية وبرتقالية. وتحريك الشعار مقصوص عمودياً للريلز والستوري.",
+pft:"مونوغرام لـ YK، مدرّب شخصي مستقل. حرفا Y وK مقصوصان من حلقة واحدة ثقيلة، فيُقرأ الرمز كقرص أثقال من الأمام، مع دمبلين متقاطعين داخله. وحلقة خارجية رفيعة تحمل اللقب بخط رياضي مضغوط، تُغلق عند طرفيها بقرصين صغيرين. البرقوقي الداكن والأبيض يبعدانه عن مظهر الجيم المعتاد بالأسود والأحمر، والبناء بلون واحد يصمد في التطريز والطباعة الحريرية واللوحات المجسّمة.",
+gfa:"يرسم الرمز روبياناً يلتف فوق سمكة خليجية بخط أحادي واحد، فيجتمع منتجا المزرعة في رمز واحد. والشعار العربي والإنجليزي المتراكب يحافظ على سُمك الخط نفسه. وعلى التغليف ينقسم الرمز: لكل منتج لونه واقتطاع ضخم لنصفه من الرمز، البرتقالي للروبيان والفيروزي للصافي، مع نقش متكرر للكائن وختم «صُنع في البحرين».",
+adhan:"هوية لمسابقة أجمل أذان، تُقام إحياءً لذكرى المؤذن المغفور له بإذن الله عبدالله محمد البلوشي. يجمع الشعار ثلاث أفكار: الهلال، وقوس المحراب، وأعمدة موجة صوتية ترتفع وتنخفض على الجانبين، فيُرسم الأذان كصوت. وفي تحريك الشعار تنبض الأعمدة كموجة صوتية حيّة قبل أن تستقر ويرتفع المحراب من بينها. والأزرق الليلي العميق والذهبي الدافئ يحملانها عبر كاروسيل الإعلان ومنشورات السوشال ميديا."
+};
+let lang='en';
+const T=x=>lang==='ar'?(AR[x]??x):x;
+const I18N_SEL='h1.sr-only,.nav ul a,.nav .btn,.hero-top .label,.lede,.hero-cta .btn,.sec-head .label,.sec-head h2,.sec-head > p,.svc h3,.svc li,.meta h3,.meta .label,.step .label b,.step h3,.step p,#about h2,#about .label,.copy p,.facts b,.contact .label,.contact h2,.copyline .k,.copyline .v:not(#em),.copyline button,form.brief .send,footer .label,footer nav a';
+function setLang(l){
+  lang=l;const ar=l==='ar';const root=document.documentElement;root.lang=l;root.dir=ar?'rtl':'ltr';
+  document.querySelectorAll(I18N_SEL).forEach(el=>{if(el.dataset.en===undefined)el.dataset.en=el.innerHTML.trim();el.innerHTML=ar?(AR[el.dataset.en]??el.dataset.en):el.dataset.en});
+  document.querySelectorAll('.filters button, form.brief label').forEach(el=>{const n=[...el.childNodes].find(x=>x.nodeType===3&&x.textContent.trim());if(!n)return;if(n.en===undefined)n.en=n.textContent.trim();n.textContent=ar?(AR[n.en]??n.en):n.en});
+  document.querySelectorAll('[placeholder]').forEach(el=>{if(el.dataset.enPh===undefined)el.dataset.enPh=el.placeholder;el.placeholder=T(el.dataset.enPh)});
+  document.querySelectorAll('#f-type option').forEach(o=>{if(o.dataset.en===undefined)o.dataset.en=o.textContent;o.textContent=T(o.dataset.en)});
+  const b=document.getElementById('langBtn');if(b){b.textContent=ar?'EN':'عربي';b.lang=ar?'en':'ar';b.setAttribute('aria-label',ar?'Switch to English':'التبديل إلى العربية')}
+  try{localStorage.setItem('lang',l)}catch(e){}
+}
+document.getElementById('langBtn').addEventListener('click',()=>setLang(lang==='ar'?'en':'ar'));
+try{if(localStorage.getItem('lang')==='ar')setLang('ar')}catch(e){}
+
 if(reduce) document.querySelectorAll('video[autoplay]').forEach(v=>{v.removeAttribute('autoplay');v.pause();v.controls=true});
 
 /* Filters */
@@ -671,7 +783,7 @@ alif:{k:'Couture identity · Stationery',t:'ALIF Couture',dir:'alif',p:'A callig
   g:[['wall','Embossed wall sign','g-sq'],['logo','Primary mark','g-sq'],['bag','Shopping bag','g-sq'],['invoice','Order book with measurement chart','g-sq'],['tag','Hang tag','g-sq'],['cards','Business cards','g-sq']]},
 pft:{k:'Fitness identity',t:'YK Personal Trainer',dir:'pft',p:'A monogram for YK, an independent personal trainer. The initials Y and K are cut from one heavy ring, so the mark reads as a weight plate seen face-on, with crossed dumbbells set into the counter. A thin outer ring carries the title in a condensed sports face, closed at each end by a small plate. Deep plum and white keep it out of the usual black-and-red gym look, and the single-colour build holds up in embroidery, screen print and dimensional signage.',f:[['Scope','Monogram, identity, merchandise'],['Colour','Deep plum · white'],['Touchpoints','Gym bag, training jersey, exterior sign']],
   g:[['logo','Primary monogram','g-half'],['bag','Drawstring gym bag','g-half'],['storefront','Exterior sign','g-full']]},
-adhan:{k:'Competition identity · Motion',t:'Adhan Competition',dir:'adhan',p:'An identity for a competition for the most beautiful adhan, held in memory of the late muezzin Abdulla Mohammed Al-Baloushi. The mark joins three ideas: a crescent, a mihrab arch, and the bars of a sound wave rising and falling on either side, so the call to prayer is drawn as a voice. In the logo animation the bars pulse like a live waveform before they settle and the mihrab draws up out of them. Deep night blue and warm gold carry it from posters to a record sleeve.',f:[['Scope','Logo, identity, motion, print'],['Concept','Crescent · mihrab · sound wave'],['Palette','Night blue · gold'],['Touchpoints','Instagram carousel, social']],
+adhan:{k:'Competition identity · Motion',t:'Adhan Competition',dir:'adhan',p:'An identity for a competition for the most beautiful adhan, held in memory of the late muezzin Abdulla Mohammed Al-Baloushi. The mark joins three ideas: a crescent, a mihrab arch, and the bars of a sound wave rising and falling on either side, so the call to prayer is drawn as a voice. In the logo animation the bars pulse like a live waveform before they settle and the mihrab draws up out of them. Deep night blue and warm gold carry it across the announcement carousel and social posts.',f:[['Scope','Logo, identity, motion, print'],['Concept','Crescent · mihrab · sound wave'],['Palette','Night blue · gold'],['Touchpoints','Instagram carousel, social']],
   g:[['logo','Primary lockup','g-half'],['concept','Concept: crescent, mihrab, sound wave','g-half'],[['slide1','slide2','slide3','slide4','slide5','slide6'],'Instagram announcement carousel · 6 slides']]},
   wt:{k:'Tech identity',t:'WT Store',p:'A tech retail identity built on a pixel grid. The monogram and chip symbol scale from price tags to storefront and keep the store feeling precise and current.',f:[['Scope','Identity, logo, retail graphics'],['Sector','Consumer electronics']]},
   wps:{k:'Government campaign',t:'LMRA · Wage Protection System',p:'A bilingual awareness campaign that explains the Wage Protection System to employers and workers. Arabic and English carry equal weight on every piece, with plain-language messaging tested for clarity.',f:[['Client','Labour Market Regulatory Authority'],['Languages','Arabic · English'],['Formats','Social, print, digital screens']]},
@@ -681,12 +793,13 @@ adhan:{k:'Competition identity · Motion',t:'Adhan Competition',dir:'adhan',p:'A
 const dlg=document.getElementById('caseDlg');
 cards.forEach(c=>c.addEventListener('click',()=>{
   const d=cases[c.dataset.case];
-  document.getElementById('caseKicker').textContent=d.k;
-  document.getElementById('caseTitle').textContent=d.t;
-  document.getElementById('caseText').textContent=d.p;
-  document.getElementById('caseFacts').innerHTML=d.f.map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join('');
+  document.getElementById('caseKicker').textContent=T(d.k);
+  document.getElementById('caseTitle').textContent=T(d.t);
+  document.getElementById('caseText').textContent=lang==='ar'&&CASE_AR[c.dataset.case]?CASE_AR[c.dataset.case]:d.p;
+  document.getElementById('caseDlg').dir=lang==='ar'?'rtl':'ltr';
+  document.getElementById('caseFacts').innerHTML=d.f.map(([a,b])=>`<div><dt>${T(a)}</dt><dd>${T(b)}</dd></div>`).join('');
   const gal=document.getElementById('caseGallery');gal.hidden=!d.g;
-  gal.innerHTML=d.g?d.g.map(([f,cap,cls,pos])=>Array.isArray(f)?`<figure class="g-strip"><div class="strip">${f.map((x,i)=>`<img src="assets/${d.dir}/${x}.jpg" alt="${d.t}: ${cap}, slide ${i+1}" loading="lazy">`).join('')}</div><figcaption>${cap}</figcaption></figure>`:`<figure class="${cls}"><img${pos?` style="object-position:${pos}"`:''} src="assets/${d.dir}/${f}.jpg" alt="${d.t}: ${cap}" loading="lazy"><figcaption>${cap}</figcaption></figure>`).join(''):'';
+  gal.innerHTML=d.g?d.g.map(([f,cap,cls,pos])=>Array.isArray(f)?`<figure class="g-strip"><div class="strip">${f.map((x,i)=>`<img src="assets/${d.dir}/${x}.jpg" alt="${T(d.t)}: ${T(cap)}, ${T('slide')} ${i+1}" loading="lazy">`).join('')}</div><figcaption>${T(cap)}</figcaption></figure>`:`<figure class="${cls}"><img${pos?` style="object-position:${pos}"`:''} src="assets/${d.dir}/${f}.jpg" alt="${T(d.t)}: ${T(cap)}" loading="lazy"><figcaption>${T(cap)}</figcaption></figure>`).join(''):'';
   const art=c.querySelector('.art').cloneNode(true);
   art.querySelectorAll('canvas').forEach(cv=>cv.remove());
   art.querySelectorAll('video[data-case-src]').forEach(v=>{v.poster=v.dataset.casePoster;v.src=v.dataset.caseSrc;});
@@ -771,14 +884,14 @@ function drawReel(cv,t){
 /* Copy + form */
 document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>{
   const el=document.getElementById(b.dataset.copy);
-  const done=()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1600)};
-  try{navigator.clipboard.writeText(el.textContent).then(done,()=>{getSelection().selectAllChildren(el);b.textContent='Selected'})}catch(e){getSelection().selectAllChildren(el);b.textContent='Selected'}
+  const done=()=>{b.textContent=T('Copied');setTimeout(()=>b.textContent=T('Copy'),1600)};
+  try{navigator.clipboard.writeText(el.textContent).then(done,()=>{getSelection().selectAllChildren(el);b.textContent=T('Selected')})}catch(e){getSelection().selectAllChildren(el);b.textContent=T('Selected')}
 }));
 document.getElementById('brief').addEventListener('submit',e=>{
   e.preventDefault();
   const n=document.getElementById('f-name').value.trim(),s=document.getElementById('sent');
   s.hidden=false;
-  s.textContent=n?`Thanks, ${n}. This preview form doesn't send yet. Email the address on the left to start.`:'Add your name so I know who to reply to.';
+  s.textContent=lang==='ar'?(n?`شكراً ${n}. هذا النموذج تجريبي ولا يُرسل بعد، راسلني على البريد الموضّح للبدء.`:'أضف اسمك حتى أعرف لمن أرد.'):(n?`Thanks, ${n}. This preview form doesn't send yet. Email the address on the left to start.`:'Add your name so I know who to reply to.');
 });
 })();
 </script>
