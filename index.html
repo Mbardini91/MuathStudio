@@ -540,6 +540,16 @@ html.intro-on{overflow:hidden}
 /* Hero logo: still lockup, cropped to its edges and centred with the statement */
 .hero-reel{aspect-ratio:286/441!important}
 .hero-main .hero-reel{--rw:clamp(130px,16vw,220px);width:var(--rw)!important;margin:0!important}
+/* Hero: three stacked rows (logo · statement · actions), centred */
+.hero-main{flex-direction:column!important;align-items:center!important;gap:clamp(28px,3.4vw,44px)!important;text-align:center}
+.hero-main .hero-reel{--rw:clamp(130px,14vw,200px);margin:0 auto!important}
+.hero-foot{display:flex!important;flex-direction:column;align-items:center;gap:clamp(28px,3.4vw,44px)!important;width:100%;flex:none!important}
+.hero-foot p.lede{max-width:30ch!important;margin-inline:auto;text-align-last:center!important}
+.hero-cta{flex-direction:row!important;justify-content:center!important;flex-wrap:wrap!important}
+.hero-main .hero-reel{--rw:clamp(120px,11vw,168px)}
+.hero-main,.hero-foot{gap:clamp(24px,2.8vw,36px)!important}
+.hero-foot p.lede{font-size:clamp(20px,2.1vw,30px)!important}
+.hero .hero-top{margin-bottom:clamp(20px,3vw,40px)}
 </style>
 </head>
 <body>
