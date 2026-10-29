@@ -9,25 +9,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Palette: stormy teal ground, green yellow accent, turquoise support. */
+/* Palette: light yellow ground, green yellow accent, turquoise support (light theme). */
 :root{
-  --ink:#0B3954;          /* stormy teal: page ground */
-  --ink-2:#114563;        /* raised surfaces */
-  --ink-3:#1F5A78;        /* lines, wells */
-  --bone:#F2F9F7;         /* primary text */
-  --ash:#A9C6CF;          /* secondary text */
+  --ink:#F6F4D2;          /* light yellow: page ground */
+  --ink-2:#EDEAC2;        /* raised surfaces */
+  --ink-3:#D6D2A4;        /* lines, wells */
+  --bone:#10231F;         /* primary text (deep green-ink) */
+  --ash:#52645C;          /* secondary text */
   --lime:#AFFC41;         /* green yellow: signal accent */
-  --aqua:#1DD3B0;         /* turquoise */
+  --aqua:#0E9C82;         /* turquoise, deepened for text on light */
   --cyan:#1DD3B0;         /* turquoise */
-  --teal:#0A6E7A;         /* turquoise toward ground, for glow */
-  --lime-ink:#072A3E;     /* text on accent */
+  --teal:#1DD3B0;         /* turquoise glow */
+  --lime-ink:#10231F;     /* text on accent */
   --display:"IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
   --body:"IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --arabic:"IBM Plex Sans Arabic", "Geeza Pro", "Noto Sans Arabic", sans-serif;
   --gutter:clamp(16px, 4vw, 56px);
   --max:1320px;
-  color-scheme:dark;
+  color-scheme:light;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -40,7 +40,7 @@ a{color:inherit}
 
 .wrap{max-width:var(--max);margin:0 auto;padding-left:max(var(--gutter), env(safe-area-inset-left,0px));padding-right:max(var(--gutter), env(safe-area-inset-right,0px))}
 .label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ash)}
-.label b{color:var(--lime);font-weight:500}
+.label b{color:var(--aqua);font-weight:500}
 h1,h2,h3{font-family:var(--display);font-weight:800;line-height:.95;letter-spacing:-.03em;margin:0;text-wrap:balance}
 p{margin:0}
 
@@ -62,12 +62,12 @@ p{margin:0}
 .hero{padding-block:clamp(48px,9vw,120px) clamp(40px,6vw,72px)}
 .hero-top{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,48px)}
 .status{display:inline-flex;align-items:center;gap:10px}
-.status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 0 var(--lime);animation:ping 2.4s infinite}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--aqua);box-shadow:0 0 0 0 var(--aqua);animation:ping 2.4s infinite}
 @keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--lime) 60%,transparent)}80%,100%{box-shadow:0 0 0 10px transparent}}
 .hero h1{font-size:clamp(52px,12.5vw,188px)}
 .hero h1 .row{display:flex;align-items:baseline;gap:.18em;flex-wrap:wrap}
 .hero h1 .out{color:transparent;-webkit-text-stroke:1.5px var(--bone)}
-.hero h1 .ar{font-family:var(--arabic);font-weight:700;font-size:.42em;letter-spacing:0;color:var(--lime);line-height:1;transform:translateY(-.25em)}
+.hero h1 .ar{font-family:var(--arabic);font-weight:700;font-size:.42em;letter-spacing:0;color:var(--aqua);line-height:1;transform:translateY(-.25em)}
 .hero h1 span.word{display:inline-block;animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
 .hero h1 .row:nth-child(2) span.word{animation-delay:.08s}
 .hero h1 .row:nth-child(3) span.word{animation-delay:.16s}
@@ -268,7 +268,7 @@ dialog::backdrop{background:#000000b3;backdrop-filter:blur(6px)}
 .take{border:1px solid var(--ink-3);border-radius:6px;padding:clamp(20px,3vw,28px);display:flex;flex-direction:column;gap:18px;background:var(--ink-2)}
 .take-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
 .take h3{font-size:22px;letter-spacing:-.02em;line-height:1.15}
-.take .lang{font-family:var(--arabic);font-size:15px;color:var(--lime)}
+.take .lang{font-family:var(--arabic);font-size:15px;color:var(--aqua)}
 .take .wv{display:flex;align-items:center;gap:2px;height:56px}
 .take .wv i{flex:1;background:var(--ash);border-radius:2px;min-width:2px;transition:background .15s}
 .take .wv i.on{background:var(--lime)}
@@ -312,7 +312,7 @@ dialog::backdrop{background:#000000b3;backdrop-filter:blur(6px)}
 /* Contact */
 .contact{background:var(--lime);color:var(--lime-ink)}
 .contact .wrap{padding-block:clamp(72px,10vw,140px)}
-.contact .label{color:#072A3Eb3}
+.contact .label{color:#10231Fb3}
 .contact h2{font-size:clamp(52px,11vw,170px);margin:20px 0 40px}
 .contact-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:start}
 .copyline{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 0;border-top:1.5px solid var(--lime-ink)}
@@ -324,7 +324,7 @@ dialog::backdrop{background:#000000b3;backdrop-filter:blur(6px)}
 form.brief{display:grid;gap:14px}
 form.brief label{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;display:grid;gap:8px}
 form.brief input,form.brief select,form.brief textarea{font:500 16px/1.4 var(--body);padding:12px 0;background:transparent;border:0;border-bottom:1.5px solid var(--lime-ink);color:var(--lime-ink);border-radius:0;width:100%}
-form.brief input::placeholder,form.brief textarea::placeholder{color:#072A3E99}
+form.brief input::placeholder,form.brief textarea::placeholder{color:#10231F99}
 form.brief select{appearance:none;cursor:pointer}
 form.brief textarea{resize:vertical;min-height:84px}
 form.brief .send{justify-self:start;margin-top:8px;background:var(--lime-ink);color:var(--lime);border-color:var(--lime-ink)}
@@ -341,8 +341,8 @@ footer a:hover{color:var(--bone)}
 body{background:
   radial-gradient(42vw 36vw at 92% -4%, color-mix(in srgb,var(--lime) 42%,transparent) 0%, color-mix(in srgb,var(--lime) 14%,transparent) 38%, transparent 70%),
   radial-gradient(55vw 40vw at 62% 106%, color-mix(in srgb,var(--aqua) 24%,transparent) 0%, transparent 66%),
-  radial-gradient(50vw 44vw at -6% 60%, color-mix(in srgb,var(--teal) 70%,transparent) 0%, transparent 70%),
-  linear-gradient(180deg,#0B3954 0%,#093049 55%,#07263B 100%);
+  radial-gradient(50vw 44vw at -6% 60%, color-mix(in srgb,var(--teal) 34%,transparent) 0%, transparent 70%),
+  linear-gradient(180deg,#F8F6DA 0%,#F6F4D2 55%,#F1EEC6 100%);
   background-attachment:fixed;background-color:var(--ink)}
 .svc,.contact,.reel{position:relative}
 .svc{background:color-mix(in srgb,var(--ink) 55%,transparent)}
@@ -360,7 +360,7 @@ body{background:
 .tunnel-ring.r1{width:48vmin;height:48vmin;border:1px solid color-mix(in srgb,var(--lime) 22%,transparent)}
 .tunnel-ring.r2{width:76vmin;height:76vmin;border:1px dashed color-mix(in srgb,var(--bone) 12%,transparent)}
 .tunnel-copy{position:relative;z-index:0;text-align:center;max-width:36rem;padding-inline:16px;will-change:transform,opacity}
-.tunnel-copy .label{color:var(--lime);margin-bottom:14px}
+.tunnel-copy .label{color:var(--aqua);margin-bottom:14px}
 .tunnel-copy h2{font-size:clamp(48px,9vw,120px);line-height:.92;background:linear-gradient(180deg,var(--bone) 30%,color-mix(in srgb,var(--bone) 35%,transparent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .tunnel-hint{margin-top:16px;color:var(--ash);font-size:15px}
 .tunnel-space{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
@@ -459,7 +459,7 @@ dialog[open] .gallery figure{animation:frame-in 420ms var(--ease-out) both;anima
   .btn:active,.card:active,.filters button:active{transform:none}
 }
 /* Liquid glass navbar (ported from Nimbus UI "Waterline" by guglielmogiannattasio.it) */
-.nimbus-nav{--n-tint:rgba(6,7,5,.34);--n-fg:var(--bone);--n-fg-soft:var(--ash);--n-rim:rgba(255,255,255,.22);
+.nimbus-nav{--n-tint:rgba(255,255,250,.42);--n-fg:var(--bone);--n-fg-soft:var(--ash);--n-rim:rgba(255,255,255,.9);
   position:fixed;z-index:30;left:50%;top:calc(env(safe-area-inset-top,0px) + var(--lnav-top,12px));transform:translateX(-50%);
   display:inline-flex;align-items:center;gap:2px;padding:5px;border-radius:999px;isolation:isolate;user-select:none;-webkit-tap-highlight-color:transparent}
 .nimbus-glass{position:absolute;inset:0;border-radius:inherit;z-index:-2;overflow:hidden;background:var(--n-tint);
@@ -503,8 +503,8 @@ html.intro-on{overflow:hidden}
 .intro.intro-out{clip-path:inset(0 0 100% 0);pointer-events:none}
 .intro .glass-reveal{position:absolute;inset:0}
 .intro canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.intro-skip{position:absolute;right:clamp(16px,3vw,32px);bottom:calc(clamp(16px,3vw,32px) + env(safe-area-inset-bottom,0px));font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#0B395499;background:none;border:1px solid #0B395433;border-radius:999px;padding:10px 14px;cursor:pointer}
-.intro-skip:hover{color:#0B3954;border-color:#0B395499}
+.intro-skip{position:absolute;right:clamp(16px,3vw,32px);bottom:calc(clamp(16px,3vw,32px) + env(safe-area-inset-bottom,0px));font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#10231F99;background:none;border:1px solid #10231F33;border-radius:999px;padding:10px 14px;cursor:pointer}
+.intro-skip:hover{color:#10231F;border-color:#10231F99}
 [dir="rtl"] .intro-skip{right:auto;left:clamp(16px,3vw,32px);font-family:var(--arabic,var(--body));letter-spacing:0}
 /* Hero: centred, evenly spaced row (logo · statement · actions) */
 .hero-main{--hg:clamp(28px,4vw,64px);gap:var(--hg)!important;align-items:center!important}
@@ -568,7 +568,7 @@ body::after{opacity:.15;z-index:-1}
 <script>document.documentElement.classList.add('intro-on');try{if(localStorage.getItem('lang')==='ar'){document.querySelector('.intro-skip').textContent='تخطي'}}catch(e){}</script>
 <header class="nav">
   <div class="wrap">
-    <a class="mark" href="#top"><img src="assets/studio/mark.png" alt="" width="26" height="26">Muath Studio</a>
+    <a class="mark" href="#top"><img src="assets/studio/mark-dark.png" alt="" width="26" height="26">Muath Studio</a>
     <div class="nav-actions"><button class="lang-toggle" id="langBtn" type="button" lang="ar" aria-label="التبديل إلى العربية">عربي</button><a class="btn primary" href="#contact">Start a project</a></div>
   </div>
 </header>
@@ -591,7 +591,7 @@ body::after{opacity:.15;z-index:-1}
       <h1 class="sr-only">Muath Studio: identity, motion and voice</h1>
       <div class="hero-main">
       <div class="hero-reel">
-        <img src="assets/studio/hero-logo.png" alt="Muath Studio logo" width="286" height="441">
+        <img src="assets/studio/hero-logo-dark.png" alt="Muath Studio logo" width="286" height="441">
       </div>
       <div class="hero-foot">
         <p class="lede">I'm Muath Albardini. I design brands and then make them <em>move and speak</em>, from the logo to the launch film to the voice behind it.</p>
@@ -980,7 +980,7 @@ document.querySelectorAll('.take').forEach(t=>{
 
 /* Generative canvases */
 function fit(cv){const r=cv.getBoundingClientRect();const d=Math.min(devicePixelRatio||1,2);cv.width=Math.max(1,r.width*d);cv.height=Math.max(1,r.height*d);return d}
-const lime='#AFFC41',bone='#F2F9F7',ash='#1F5A78';
+const lime='#AFFC41',bone='#10231F',ash='#D6D2A4';
 function drawMotion(cv,t){
   const d=fit(cv),c=cv.getContext('2d'),w=cv.width,h=cv.height;c.clearRect(0,0,w,h);
   const cx=w/2,cy=h*.44,R=Math.min(w,h)*.22;
@@ -992,7 +992,7 @@ function drawReel(cv,t){
   const d=fit(cv),c=cv.getContext('2d'),w=cv.width,h=cv.height;
   c.fillStyle='#0F110D';c.fillRect(0,0,w,h);
   const cols=14,cw=w/cols;
-  for(let i=0;i<cols;i++){const v=(Math.sin(t*.9+i*.55)+1)/2;c.fillStyle=i%5===0?lime:'#114563';c.fillRect(i*cw+cw*.2,h*(1-v*.75)-h*.08,cw*.6,h*v*.75)}
+  for(let i=0;i<cols;i++){const v=(Math.sin(t*.9+i*.55)+1)/2;c.fillStyle=i%5===0?lime:'#EDEAC2';c.fillRect(i*cw+cw*.2,h*(1-v*.75)-h*.08,cw*.6,h*v*.75)}
   c.strokeStyle='#ffffff14';c.lineWidth=1*d;
   [1/3,2/3].forEach(f=>{c.beginPath();c.moveTo(w*f,0);c.lineTo(w*f,h);c.stroke();c.beginPath();c.moveTo(0,h*f);c.lineTo(w,h*f);c.stroke()});
 }
@@ -1493,7 +1493,7 @@ const TEX=1024,BOX=0.75,TAIL=1.1,OUTRO=0.5;
 const P={tileSize:300,logoScale:0.6,finalScale:0.8,logoOffset:[0,0],iconPlate:false,keepPlate:false,originalColors:false,
   opticalDepth:1.1,dispersion:1.7,colorBleed:1.25,doubleBevel:1,bevelWidth:0.14,corner:4.8,cornerPull:2.1,cornerWidth:2.2,cornerFocus:0.58,edgeSmear:2.85,
   stretch:0,tilt:0.35,bulge:1,specular:1,halo:0,shadow:1,ripple:1,bounce:0,response:0.42,startSize:0.2,startZoom:2.3,glide:2.3,present:2.4,drift:0.12,swell:0.5,focus:1,
-  sheen:1,lightTurn:0.9,hold:0.5,background:'#AFFC41',plateColor:'#ffffff',logoColor:'#0B3954'};
+  sheen:1,lightTurn:0.9,hold:0.5,background:'#AFFC41',plateColor:'#ffffff',logoColor:'#10231F'};
 const endOf=()=>P.present+TAIL;
 const clamp01=x=>x<0?0:x>1?1:x, mix=(a,b,t)=>a+(b-a)*t;
 const smooth=(a,b,x)=>{const t=clamp01((x-a)/(b-a));return t*t*(3-2*t)};
