@@ -537,6 +537,9 @@ html.intro-on{overflow:hidden}
 .svc-panel[hidden]{display:none!important}
 .svc-tab{aspect-ratio:auto;height:clamp(72px,9vw,124px)}
 .svc-panel .tc{direction:ltr;unicode-bidi:isolate}
+/* Hero logo: still lockup, cropped to its edges and centred with the statement */
+.hero-reel{aspect-ratio:286/441!important}
+.hero-main .hero-reel{--rw:clamp(130px,16vw,220px);width:var(--rw)!important;margin:0!important}
 </style>
 </head>
 <body>
@@ -568,7 +571,7 @@ html.intro-on{overflow:hidden}
       <h1 class="sr-only">Muath Studio: identity, motion and voice</h1>
       <div class="hero-main">
       <div class="hero-reel">
-        <picture><source srcset="assets/studio/hero-alpha-still.png" media="(prefers-reduced-motion: reduce)"><img src="assets/studio/hero-alpha.webp" alt="Muath Studio logo animation" width="336" height="472"></picture>
+        <img src="assets/studio/hero-logo.png" alt="Muath Studio logo" width="286" height="441">
       </div>
       <div class="hero-foot">
         <p class="lede">I'm Muath Albardini. I design brands and then make them <em>move and speak</em>, from the logo to the launch film to the voice behind it.</p>
