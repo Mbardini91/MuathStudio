@@ -493,16 +493,21 @@ dialog[open] .gallery figure{animation:frame-in 420ms var(--ease-out) both;anima
   .nimbus-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 }
 @media (prefers-reduced-motion:reduce){.nv-ico svg,.nv-door{animation:none!important;transition:none}}
-/* Glass logo reveal in the contact section */
-.glass-reveal{position:relative;isolation:isolate;overflow:hidden;margin-top:clamp(24px,3vw,40px);height:clamp(280px,30vw,400px);border-radius:22px;background:#C8F000;cursor:pointer;user-select:none;outline:none}
-.glass-reveal canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.glass-reveal:focus-visible{box-shadow:0 0 0 2px var(--lime-ink)}
-.glass-reveal.gr-fallback::before{content:"";position:absolute;inset:0;margin:auto;width:34%;aspect-ratio:1;background:var(--lime-ink);
-  -webkit-mask:url(assets/studio/glyph.png) center/contain no-repeat;mask:url(assets/studio/glyph.png) center/contain no-repeat}
+/* Glass logo reveal intro */
+html.intro-on{overflow:hidden}
+.intro{position:fixed;inset:0;z-index:200;background:#C8F000;cursor:pointer;clip-path:inset(0 0 0 0);transition:clip-path 1s cubic-bezier(.77,0,.18,1)}
+.intro.intro-out{clip-path:inset(0 0 100% 0);pointer-events:none}
+.intro .glass-reveal{position:absolute;inset:0}
+.intro canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.intro-skip{position:absolute;right:clamp(16px,3vw,32px);bottom:calc(clamp(16px,3vw,32px) + env(safe-area-inset-bottom,0px));font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#06070599;background:none;border:1px solid #06070533;border-radius:999px;padding:10px 14px;cursor:pointer}
+.intro-skip:hover{color:#060705;border-color:#06070599}
+[dir="rtl"] .intro-skip{right:auto;left:clamp(16px,3vw,32px);font-family:var(--arabic,var(--body));letter-spacing:0}
 </style>
 </head>
 <body>
 <canvas id="beams" aria-hidden="true"></canvas>
+<div class="intro" id="intro" aria-hidden="true"><div class="glass-reveal" id="glassReveal" data-logo="assets/studio/glyph.png"></div><button class="intro-skip" type="button" tabindex="-1">Skip</button></div>
+<script>document.documentElement.classList.add('intro-on');try{if(localStorage.getItem('lang')==='ar'){document.querySelector('.intro-skip').textContent='تخطي'}}catch(e){}</script>
 <header class="nav">
   <div class="wrap">
     <a class="mark" href="#top"><img src="assets/studio/mark.png" alt="" width="26" height="26">Muath Studio</a>
@@ -726,7 +731,6 @@ dialog[open] .gallery figure{animation:frame-in 420ms var(--ease-out) both;anima
         <div>
           <div class="copyline"><span class="k">Email</span><span class="v" id="em">muath.albardini@gmail.com</span><button type="button" data-copy="em">Copy</button></div>
           <div class="copyline"><span class="k">Studio</span><span class="v">Muath Studio · Bahrain</span></div>
-          <div class="glass-reveal" id="glassReveal" data-logo="assets/studio/glyph.png" role="img" aria-label="Muath Studio mark, tap to replay" tabindex="0"></div>
         </div>
         <form class="brief" id="brief" novalidate>
           <label for="f-name">Name<input id="f-name" name="name" placeholder="Your name" required></label>
@@ -1171,7 +1175,7 @@ align();spy();measure();
 })();
 </script>
 <script>
-/* Glass logo reveal: vanilla port of 21st.dev "liquid-glass-logo-reveal"; shader and spring timeline from zanwei/glass-icon-reveal (MIT) https://github.com/zanwei/glass-icon-reveal */
+/* Glass logo reveal intro: vanilla port of 21st.dev "liquid-glass-logo-reveal"; shader and spring timeline from zanwei/glass-icon-reveal (MIT) https://github.com/zanwei/glass-icon-reveal */
 (()=>{
 const VERT = `#version 300 es
 in vec2 aPos;
@@ -1462,10 +1466,10 @@ void main() {
   outColor = vec4(outc, 1.0);
 }`;
 const TEX=1024,BOX=0.75,TAIL=1.1,OUTRO=0.5;
-const P={tileSize:230,logoScale:0.6,finalScale:0.8,logoOffset:[0,0],iconPlate:false,keepPlate:false,originalColors:false,
+const P={tileSize:300,logoScale:0.6,finalScale:0.8,logoOffset:[0,0],iconPlate:false,keepPlate:false,originalColors:false,
   opticalDepth:1.1,dispersion:1.7,colorBleed:1.25,doubleBevel:1,bevelWidth:0.14,corner:4.8,cornerPull:2.1,cornerWidth:2.2,cornerFocus:0.58,edgeSmear:2.85,
   stretch:0,tilt:0.35,bulge:1,specular:1,halo:0,shadow:1,ripple:1,bounce:0,response:0.42,startSize:0.2,startZoom:2.3,glide:2.3,present:2.4,drift:0.12,swell:0.5,focus:1,
-  sheen:1,lightTurn:0.9,hold:2.6,background:'#C8F000',plateColor:'#ffffff',logoColor:'#060705'};
+  sheen:1,lightTurn:0.9,hold:0.5,background:'#C8F000',plateColor:'#ffffff',logoColor:'#060705'};
 const endOf=()=>P.present+TAIL;
 const clamp01=x=>x<0?0:x>1?1:x, mix=(a,b,t)=>a+(b-a)*t;
 const smooth=(a,b,x)=>{const t=clamp01((x-a)/(b-a));return t*t*(3-2*t)};
@@ -1536,36 +1540,29 @@ function createRenderer(canvas){const gl=canvas.getContext('webgl2',{antialias:f
     render(fr,w,h,tilePx){if(!hasLogo)return;gl.viewport(0,0,w,h);gl.uniform2f(U.uCenter,w/2,h/2);gl.uniform1f(U.uTile,tilePx);gl.uniform1f(U.uTexSize,TEX);gl.uniform1f(U.uBoxFrac,BOX);
       for(const k in fr){const v=fr[k];if(typeof v==='number'&&U[k])gl.uniform1f(U[k],v)}
       gl.uniform3fv(U.uBg,fr.uBg);gl.uniform3fv(U.uPlateCol,fr.uPlateCol);gl.uniform3fv(U.uLogoCol,fr.uLogoCol);gl.uniform2fv(U.uLogoOff,fr.uLogoOff);gl.drawArrays(gl.TRIANGLES,0,3)}}}
-/* mount */
-const wrap=document.getElementById('glassReveal');if(!wrap)return;
-const SRC=wrap.dataset.logo;
-const fallback=()=>{wrap.classList.add('gr-fallback')};
+/* mount: full-screen intro, plays once, then wipes away to reveal the site */
+const intro=document.getElementById('intro'),wrap=document.getElementById('glassReveal');if(!intro||!wrap)return;
+const root=document.documentElement;let finished=false;
+const finish=()=>{if(finished)return;finished=true;intro.classList.add('intro-out');root.classList.remove('intro-on');
+  const kill=()=>{intro.remove();if(raf)cancelAnimationFrame(raf);raf=0};intro.addEventListener('transitionend',kill,{once:true});setTimeout(kill,1400)};
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){intro.remove();root.classList.remove('intro-on');return}
 const canvas=document.createElement('canvas');canvas.setAttribute('aria-hidden','true');wrap.appendChild(canvas);
 let renderer=null;try{renderer=createRenderer(canvas)}catch(e){console.error(e)}
-if(!renderer){canvas.remove();fallback();return}
-const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let logo=null,time=reduceMotion?1.4:0,playing=!reduceMotion,pauseLeft=0,outro=0,dirty=true,visible=false,lost=false,raf=0,last=0,started=false;
-function tick(now){raf=0;const dt=Math.min(0.1,(now-last)/1000);last=now;const end=endOf();
-  if(playing&&logo){if(pauseLeft>0){pauseLeft-=dt;const was=outro;outro=clamp01(1-pauseLeft/OUTRO);if(pauseLeft<=0){pauseLeft=0;outro=0;time=0}if(outro!==was||time===0)dirty=true}
-    else{time+=dt;if(time>=end){time=end;pauseLeft=Math.max(0.05,P.hold)+OUTRO}dirty=true}}
-  if(dirty&&logo&&renderer&&!lost){const dpr=Math.min(devicePixelRatio||1,2),cw=canvas.clientWidth,ch=canvas.clientHeight,w=Math.max(1,Math.round(cw*dpr)),h=Math.max(1,Math.round(ch*dpr));
+if(!renderer){intro.remove();root.classList.remove('intro-on');return}
+let logo=null,time=0,dirty=true,lost=false,raf=0,last=0,doneAt=0;
+function tick(now){raf=0;const dt=Math.min(0.05,(now-last)/1000);last=now;const end=endOf();
+  if(logo){time=Math.min(end,time+dt);dirty=true;if(time>=end){doneAt+=dt;if(doneAt>=P.hold){finish();return}}}
+  if(dirty&&logo&&!lost){const dpr=Math.min(devicePixelRatio||1,2),cw=canvas.clientWidth,ch=canvas.clientHeight,w=Math.max(1,Math.round(cw*dpr)),h=Math.max(1,Math.round(ch*dpr));
     if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}
-    const tile=Math.min(P.tileSize,Math.min(cw,ch)/1.75);renderer.render(frameAt(Math.min(time,end),outro),w,h,tile*dpr);dirty=false}
-  if(visible&&playing&&logo&&!lost)raf=requestAnimationFrame(tick)}
-function kick(){if(raf||!visible||lost)return;last=performance.now();raf=requestAnimationFrame(tick)}
-function replay(){if(!logo)return;time=reduceMotion?1.4:0;playing=!reduceMotion;pauseLeft=0;outro=0;dirty=true;kick()}
-new IntersectionObserver(([e])=>{visible=e.isIntersecting;
-  if(visible){if(!started&&logo){started=true;replay()}kick()}else if(raf){cancelAnimationFrame(raf);raf=0}},{threshold:0.35}).observe(wrap);
-new ResizeObserver(()=>{dirty=true;kick()}).observe(wrap);
-canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();lost=true});
-canvas.addEventListener('webglcontextrestored',()=>{lost=false;try{renderer=createRenderer(canvas);if(renderer&&logo)renderer.setLogo(logo)}catch(e){console.error(e)}dirty=true;kick()});
-wrap.addEventListener('click',replay);
-wrap.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();replay()}});
-/* build the SDF only once the section is near the viewport (~100 ms of work) */
+    const tile=Math.min(P.tileSize,Math.min(cw,ch)/1.75);renderer.render(frameAt(time,0),w,h,tile*dpr);dirty=false}
+  if(!finished&&!lost)raf=requestAnimationFrame(tick)}
+canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();lost=true;finish()});
+intro.addEventListener('click',finish);
+addEventListener('keydown',e=>{if(e.key==='Escape'||e.key==='Enter'||e.key===' ')finish()},{once:true});
+setTimeout(finish,9000); /* safety: never trap the visitor */
 const img=new Image();img.decoding='async';
-const load=()=>{img.onload=()=>{try{const c=fitToTexture(img,img.naturalWidth,img.naturalHeight);logo={canvas:c,sdf:buildSdf(c)};renderer.setLogo(logo);dirty=true;if(visible){started=true;replay()}}catch(e){console.error(e);canvas.remove();fallback()}};
-  img.onerror=()=>{canvas.remove();fallback()};img.src=SRC};
-const pre=new IntersectionObserver(([e])=>{if(e.isIntersecting){pre.disconnect();load()}},{rootMargin:'600px 0px'});pre.observe(wrap);
+img.onload=()=>{try{const c=fitToTexture(img,img.naturalWidth,img.naturalHeight);logo={canvas:c,sdf:buildSdf(c)};renderer.setLogo(logo);last=performance.now();raf=requestAnimationFrame(tick)}catch(e){console.error(e);finish()}};
+img.onerror=finish;img.src=wrap.dataset.logo;
 })();
 </script>
 
