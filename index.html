@@ -9,15 +9,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: editorial single-scroll studio site. Oversized Syne type, a timecode rail for motion/video, lime used only for signal moments. */
+/* Palette: deep space blue ground, pearl aqua / pacific cyan / dark teal / mint leaf accents. */
 :root{
-  --ink:#060705;          /* page ground, green-biased near-black */
-  --ink-2:#141612;        /* raised surfaces */
-  --ink-3:#1E211B;        /* lines, wells */
-  --bone:#F6F8EF;         /* primary text */
-  --ash:#A3A994;          /* secondary text */
-  --lime:#C8F000;         /* signal accent */
-  --lime-ink:#0B0C0A;     /* text on lime */
+  --ink:#172A3A;          /* deep space blue: page ground */
+  --ink-2:#1D3446;        /* raised surfaces */
+  --ink-3:#2B4C5C;        /* lines, wells (toward pacific cyan) */
+  --bone:#EEF8F7;         /* primary text */
+  --ash:#9CBDC0;          /* secondary text */
+  --lime:#09BC8A;         /* mint leaf: signal accent */
+  --aqua:#75DDDD;         /* pearl aqua */
+  --cyan:#508991;         /* pacific cyan */
+  --teal:#004346;         /* dark teal */
+  --lime-ink:#0D1C28;     /* text on accent */
   --display:"IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
   --body:"IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -82,7 +85,7 @@ p{margin:0}
 @media (max-width:980px){.hero-foot{grid-template-columns:1fr}.hero-cta{justify-content:flex-start!important;flex-wrap:wrap!important}}
 @media (max-width:620px){.hero-main{flex-direction:column;align-items:flex-start}}
 .hero-foot p.lede{font-size:clamp(17px,1.6vw,20px);color:var(--bone);max-width:34ch;line-height:1.5}
-.hero-foot p.lede em{font-style:normal;color:var(--lime)}
+.hero-foot p.lede em{font-style:normal;color:var(--aqua)}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
 @media (max-width:760px){.hero-foot{grid-template-columns:1fr}.hero-cta{justify-content:flex-start}}
 
@@ -293,11 +296,11 @@ dialog::backdrop{background:#000000b3;backdrop-filter:blur(6px)}
 .portrait .ph{position:static!important;background:none!important;padding:12px 0 0!important;display:flex;justify-content:space-between;border-top:1px solid var(--ink-3)}
 .portrait img{position:relative;z-index:1;width:100%;height:auto;display:block}
 .portrait .ph{z-index:2;padding:10px 12px;background:color-mix(in srgb,var(--ink) 70%,transparent);border-radius:4px;inset:auto 12px 12px 12px!important}
-.portrait .mono{position:absolute;top:2%;left:50%;transform:translateX(-50%);z-index:0;color:transparent;-webkit-text-stroke:1.5px #2F3329;}
+.portrait .mono{position:absolute;top:2%;left:50%;transform:translateX(-50%);z-index:0;color:transparent;-webkit-text-stroke:1.5px var(--ink-3);}
 .portrait .mono{font:800 clamp(120px,18vw,240px)/1 var(--display);color:transparent;-webkit-text-stroke:1.5px var(--ink-3);letter-spacing:-.06em}
 .portrait .ph{position:absolute;inset:auto 16px 16px 16px;display:flex;justify-content:space-between}
 .about h2{font-size:clamp(34px,5vw,64px);margin-bottom:28px}
-.about h2 em{font-style:normal;color:var(--lime)}
+.about h2 em{font-style:normal;color:var(--aqua)}
 .about .copy{display:grid;gap:18px;color:var(--ash);font-size:17px;max-width:58ch}
 .about .copy strong{color:var(--bone);font-weight:500}
 .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:40px;padding-top:28px;border-top:1px solid var(--ink-3)}
@@ -309,7 +312,7 @@ dialog::backdrop{background:#000000b3;backdrop-filter:blur(6px)}
 /* Contact */
 .contact{background:var(--lime);color:var(--lime-ink)}
 .contact .wrap{padding-block:clamp(72px,10vw,140px)}
-.contact .label{color:#0B0C0A99}
+.contact .label{color:#0D1C28b3}
 .contact h2{font-size:clamp(52px,11vw,170px);margin:20px 0 40px}
 .contact-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:start}
 .copyline{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 0;border-top:1.5px solid var(--lime-ink)}
@@ -321,7 +324,7 @@ dialog::backdrop{background:#000000b3;backdrop-filter:blur(6px)}
 form.brief{display:grid;gap:14px}
 form.brief label{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;display:grid;gap:8px}
 form.brief input,form.brief select,form.brief textarea{font:500 16px/1.4 var(--body);padding:12px 0;background:transparent;border:0;border-bottom:1.5px solid var(--lime-ink);color:var(--lime-ink);border-radius:0;width:100%}
-form.brief input::placeholder,form.brief textarea::placeholder{color:#0B0C0A80}
+form.brief input::placeholder,form.brief textarea::placeholder{color:#0D1C2899}
 form.brief select{appearance:none;cursor:pointer}
 form.brief textarea{resize:vertical;min-height:84px}
 form.brief .send{justify-self:start;margin-top:8px;background:var(--lime-ink);color:var(--lime);border-color:var(--lime-ink)}
@@ -337,8 +340,9 @@ footer a:hover{color:var(--bone)}
 /* ---------- Ambient light glow ---------- */
 body{background:
   radial-gradient(42vw 36vw at 92% -4%, color-mix(in srgb,var(--lime) 42%,transparent) 0%, color-mix(in srgb,var(--lime) 14%,transparent) 38%, transparent 70%),
-  radial-gradient(55vw 40vw at 62% 106%, color-mix(in srgb,#5FE3D0 26%,transparent) 0%, transparent 66%),
-  linear-gradient(180deg,#070806 0%,#050604 55%,#030403 100%);
+  radial-gradient(55vw 40vw at 62% 106%, color-mix(in srgb,var(--aqua) 24%,transparent) 0%, transparent 66%),
+  radial-gradient(50vw 44vw at -6% 60%, color-mix(in srgb,var(--teal) 70%,transparent) 0%, transparent 70%),
+  linear-gradient(180deg,#172A3A 0%,#13232F 55%,#0E1B25 100%);
   background-attachment:fixed;background-color:var(--ink)}
 .svc,.contact,.reel{position:relative}
 .svc{background:color-mix(in srgb,var(--ink) 55%,transparent)}
@@ -495,12 +499,12 @@ dialog[open] .gallery figure{animation:frame-in 420ms var(--ease-out) both;anima
 @media (prefers-reduced-motion:reduce){.nv-ico svg,.nv-door{animation:none!important;transition:none}}
 /* Glass logo reveal intro */
 html.intro-on{overflow:hidden}
-.intro{position:fixed;inset:0;z-index:200;background:#C8F000;cursor:pointer;clip-path:inset(0 0 0 0);transition:clip-path 1s cubic-bezier(.77,0,.18,1)}
+.intro{position:fixed;inset:0;z-index:200;background:#75DDDD;cursor:pointer;clip-path:inset(0 0 0 0);transition:clip-path 1s cubic-bezier(.77,0,.18,1)}
 .intro.intro-out{clip-path:inset(0 0 100% 0);pointer-events:none}
 .intro .glass-reveal{position:absolute;inset:0}
 .intro canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.intro-skip{position:absolute;right:clamp(16px,3vw,32px);bottom:calc(clamp(16px,3vw,32px) + env(safe-area-inset-bottom,0px));font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#06070599;background:none;border:1px solid #06070533;border-radius:999px;padding:10px 14px;cursor:pointer}
-.intro-skip:hover{color:#060705;border-color:#06070599}
+.intro-skip{position:absolute;right:clamp(16px,3vw,32px);bottom:calc(clamp(16px,3vw,32px) + env(safe-area-inset-bottom,0px));font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#172A3A99;background:none;border:1px solid #172A3A33;border-radius:999px;padding:10px 14px;cursor:pointer}
+.intro-skip:hover{color:#172A3A;border-color:#172A3A99}
 [dir="rtl"] .intro-skip{right:auto;left:clamp(16px,3vw,32px);font-family:var(--arabic,var(--body));letter-spacing:0}
 /* Hero: centred, evenly spaced row (logo · statement · actions) */
 .hero-main{--hg:clamp(28px,4vw,64px);gap:var(--hg)!important;align-items:center!important}
@@ -976,7 +980,7 @@ document.querySelectorAll('.take').forEach(t=>{
 
 /* Generative canvases */
 function fit(cv){const r=cv.getBoundingClientRect();const d=Math.min(devicePixelRatio||1,2);cv.width=Math.max(1,r.width*d);cv.height=Math.max(1,r.height*d);return d}
-const lime='#C8F000',bone='#EDEFE6',ash='#3A3F33';
+const lime='#09BC8A',bone='#EEF8F7',ash='#2B4C5C';
 function drawMotion(cv,t){
   const d=fit(cv),c=cv.getContext('2d'),w=cv.width,h=cv.height;c.clearRect(0,0,w,h);
   const cx=w/2,cy=h*.44,R=Math.min(w,h)*.22;
@@ -988,7 +992,7 @@ function drawReel(cv,t){
   const d=fit(cv),c=cv.getContext('2d'),w=cv.width,h=cv.height;
   c.fillStyle='#0F110D';c.fillRect(0,0,w,h);
   const cols=14,cw=w/cols;
-  for(let i=0;i<cols;i++){const v=(Math.sin(t*.9+i*.55)+1)/2;c.fillStyle=i%5===0?lime:'#1E211B';c.fillRect(i*cw+cw*.2,h*(1-v*.75)-h*.08,cw*.6,h*v*.75)}
+  for(let i=0;i<cols;i++){const v=(Math.sin(t*.9+i*.55)+1)/2;c.fillStyle=i%5===0?lime:'#1D3446';c.fillRect(i*cw+cw*.2,h*(1-v*.75)-h*.08,cw*.6,h*v*.75)}
   c.strokeStyle='#ffffff14';c.lineWidth=1*d;
   [1/3,2/3].forEach(f=>{c.beginPath();c.moveTo(w*f,0);c.lineTo(w*f,h);c.stroke();c.beginPath();c.moveTo(0,h*f);c.lineTo(w,h*f);c.stroke()});
 }
@@ -1029,7 +1033,7 @@ function drawReel(cv,t){
 (()=>{
   const cv=document.getElementById('beams');if(!cv)return;const c=cv.getContext('2d');
   const S=.5;let W=0,H=0,beams=[],raf=0;
-  const HUES=[[72,92,62],[168,72,62]]; // lime, aqua
+  const HUES=[[163,91,40],[180,62,66]]; // mint leaf, pearl aqua
   const make=(i,n,fresh)=>{const lime=i%3!==2,[h,sat,l]=HUES[lime?0:1];
     return{x:fresh?Math.random()*W*1.4-W*.2:(i%3)*(W/3)+W/6+(Math.random()-.5)*W/6,
       y:fresh?Math.random()*H*1.5-H*.25:H+60,w:(fresh?30+Math.random()*60:60+Math.random()*70),
@@ -1094,7 +1098,7 @@ void main(){
  float spec2=pow(max(dot(reflect(-normalize(vec3(.6,.75,.7)),n),V),0.),22.)*.3;
  float fres=clamp((1.-n.z)*4.,0.,1.);
  vec3 irid=.5+.5*cos(6.2831*(vec3(0.,.33,.67)+fres*.85+p.x*.0028+uTime*.035));
- irid=mix(irid,vec3(.78,.94,0.),.55);
+ irid=mix(irid,vec3(.46,.87,.87),.55);
  float pm=smoothstep(1.,-1.,dp);float dm=smoothstep(1.,-1.,dd)*smoothstep(1.,-2.,dp);
  float sh=smoothstep(9.,-9.,dropD(p-vec2(0.,5.)))*(1.-dm)*pm*.2;
  vec3 c=vec3(0.)*sh;float a=sh;
@@ -1102,12 +1106,12 @@ void main(){
  c=mix(vec3(1.),irid,.5*fres)*pa+c*(1.-pa);a=pa+a*(1.-pa);
  float th=lens(dd,11.);
  float cs=caus((p+n.xy*th*18.)*.085,uTime*.9);
- vec3 tint=vec3(.78,.94,.12);
+ vec3 tint=vec3(.46,.87,.87);
  float rim=dm*(1.-smoothstep(0.,8.,-dd));
  float cres=dm*smoothstep(.12,.55,dot(n.xy,normalize(vec2(.55,.85))))*smoothstep(0.,3.,-dd);
  float body=.5+.5*clamp(-n.y*3.,-1.,1.);
  float da=dm*(.2+.12*body);vec3 dc=mix(tint,vec3(1.),body*.45);
- float la=rim*.3;vec3 lc=vec3(.6,.82,0.);dc=lc*la+dc*da*(1.-la);da=la+da*(1.-la);
+ float la=rim*.3;vec3 lc=vec3(.04,.74,.54);dc=lc*la+dc*da*(1.-la);da=la+da*(1.-la);
  la=clamp(cres*.6+smoothstep(.6,1.,cs)*.24*th*dm,0.,1.);dc=vec3(1.)*la+dc*(1.-la);da=la+da*(1.-la);
  la=clamp(dm*(spec*1.2+spec2*.5),0.,1.);dc=vec3(1.)*la+dc*(1.-la);da=la+da*(1.-la);
  la=dm*smoothstep(-2.,0.,dd)*.4;dc=mix(vec3(1.),irid,.35)*la+dc*(1.-la);da=la+da*(1.-la);
@@ -1489,7 +1493,7 @@ const TEX=1024,BOX=0.75,TAIL=1.1,OUTRO=0.5;
 const P={tileSize:300,logoScale:0.6,finalScale:0.8,logoOffset:[0,0],iconPlate:false,keepPlate:false,originalColors:false,
   opticalDepth:1.1,dispersion:1.7,colorBleed:1.25,doubleBevel:1,bevelWidth:0.14,corner:4.8,cornerPull:2.1,cornerWidth:2.2,cornerFocus:0.58,edgeSmear:2.85,
   stretch:0,tilt:0.35,bulge:1,specular:1,halo:0,shadow:1,ripple:1,bounce:0,response:0.42,startSize:0.2,startZoom:2.3,glide:2.3,present:2.4,drift:0.12,swell:0.5,focus:1,
-  sheen:1,lightTurn:0.9,hold:0.5,background:'#C8F000',plateColor:'#ffffff',logoColor:'#060705'};
+  sheen:1,lightTurn:0.9,hold:0.5,background:'#75DDDD',plateColor:'#ffffff',logoColor:'#172A3A'};
 const endOf=()=>P.present+TAIL;
 const clamp01=x=>x<0?0:x>1?1:x, mix=(a,b,t)=>a+(b-a)*t;
 const smooth=(a,b,x)=>{const t=clamp01((x-a)/(b-a));return t*t*(3-2*t)};
