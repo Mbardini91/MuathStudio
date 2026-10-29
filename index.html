@@ -502,6 +502,15 @@ html.intro-on{overflow:hidden}
 .intro-skip{position:absolute;right:clamp(16px,3vw,32px);bottom:calc(clamp(16px,3vw,32px) + env(safe-area-inset-bottom,0px));font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#06070599;background:none;border:1px solid #06070533;border-radius:999px;padding:10px 14px;cursor:pointer}
 .intro-skip:hover{color:#060705;border-color:#06070599}
 [dir="rtl"] .intro-skip{right:auto;left:clamp(16px,3vw,32px);font-family:var(--arabic,var(--body));letter-spacing:0}
+/* Hero: centred, evenly spaced row (logo · statement · actions) */
+.hero-main{--hg:clamp(28px,4vw,64px);gap:var(--hg)!important;align-items:center!important}
+.hero-foot{align-items:center!important;column-gap:var(--hg)!important}
+.hero-cta{flex-direction:column;align-items:stretch;gap:12px!important}
+.hero-cta .btn{justify-content:center;text-align:center}
+@media (max-width:980px){.hero-cta{flex-direction:row;align-items:center}.hero-foot{row-gap:28px!important}}
+.hero-main .hero-reel{--rw:clamp(150px,20vw,260px);margin:0!important;margin-inline-start:calc(var(--rw) * -0.077)!important;margin-inline-end:calc(var(--rw) * -0.071)!important}
+@media (max-width:620px){.hero-main .hero-reel{margin-inline-end:0!important}}
+@media (max-width:620px){.hero-main{align-items:center!important}.hero-main .hero-reel{margin-inline:auto!important}.hero-foot{width:100%}.hero-cta{justify-content:center!important}}
 </style>
 </head>
 <body>
