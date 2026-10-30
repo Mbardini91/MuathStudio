@@ -1058,13 +1058,16 @@ document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',(
 }));
 document.getElementById('brief').addEventListener('submit',e=>{
   e.preventDefault();
-  const WA='https://wa.me/message/GTVUGFZ3J3FIM1';
+  const WA_NUM=''; /* studio WhatsApp number, digits only with country code (e.g. 973XXXXXXXX): fills the brief into the chat automatically */
+  const WA_LINK='https://wa.me/message/GTVUGFZ3J3FIM1';
   const n=document.getElementById('f-name').value.trim(),s=document.getElementById('sent');
   const ty=document.getElementById('f-type'),type=ty.options[ty.selectedIndex].textContent.trim(),msg=document.getElementById('f-msg').value.trim();
   s.hidden=false;
   if(!n){s.textContent=lang==='ar'?'أضف اسمك حتى أعرف لمن أرد.':'Add your name so I know who to reply to.';document.getElementById('f-name').focus();return}
   const text=lang==='ar'?`مرحباً معاذ، عندي مشروع جديد.\nالاسم: ${n}\nالمشروع: ${type}\nالموجز: ${msg||'—'}`:`Hi Muath, I have a new project.\nName: ${n}\nProject: ${type}\nBrief: ${msg||'—'}`;
-  const w=window.open(WA,'_blank','noopener');
+  if(WA_NUM){const url='https://wa.me/'+WA_NUM+'?text='+encodeURIComponent(text);window.open(url,'_blank','noopener');
+    s.textContent=lang==='ar'?`شكراً ${n}. فتحت محادثة واتساب وفيها موجزك جاهزاً، اضغط إرسال فقط.`:`Thanks, ${n}. WhatsApp is open with your brief already typed in. Just tap send.`;return}
+  const WA=WA_LINK;const w=window.open(WA,'_blank','noopener');
   const done=ok=>{s.innerHTML='';const t=document.createElement('span');
     t.textContent=lang==='ar'?(ok?`شكراً ${n}. نسخت موجزك، الصقه في محادثة واتساب التي فُتحت وأرسله. `:`شكراً ${n}. افتح واتساب والصق موجزك: `):(ok?`Thanks, ${n}. Your brief is copied: paste it into the WhatsApp chat that just opened and hit send. `:`Thanks, ${n}. Open WhatsApp and paste your brief: `);
     const a=document.createElement('a');a.href=WA;a.target='_blank';a.rel='noopener';a.textContent=lang==='ar'?'فتح واتساب ↗':'Open WhatsApp ↗';a.style.cssText='color:inherit;font-weight:600';
