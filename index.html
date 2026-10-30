@@ -555,7 +555,7 @@ body::after{content:"";position:fixed;inset:-50%;z-index:250;pointer-events:none
   animation:grain 1s steps(8) infinite;will-change:transform}
 @keyframes grain{0%{transform:translate(0,0)}12.5%{transform:translate(-5%,3%)}25%{transform:translate(4%,-6%)}37.5%{transform:translate(-7%,-2%)}50%{transform:translate(3%,7%)}62.5%{transform:translate(-2%,-8%)}75%{transform:translate(8%,2%)}87.5%{transform:translate(-4%,5%)}100%{transform:translate(0,0)}}
 @media (prefers-reduced-motion:reduce){body::after{animation:none}}
-body::after{opacity:.15;z-index:-1}
+body::after{opacity:.1;z-index:-1}
 form.brief .send-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
 form.brief .send-row .send{margin-top:0;display:inline-flex;align-items:center;gap:8px}
 form.brief .send::before{content:"";width:16px;height:16px;background:currentColor;-webkit-mask:var(--ico) center/contain no-repeat;mask:var(--ico) center/contain no-repeat}
